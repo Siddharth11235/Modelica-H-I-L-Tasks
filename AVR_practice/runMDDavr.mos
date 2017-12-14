@@ -1,0 +1,12 @@
+loadModel(Modelica);
+getErrorString();
+
+loadFile("/home/siddharth/Modelica_DeviceDrivers/Modelica_DeviceDrivers/package.mo");
+getErrorString();
+
+loadFile("/home/siddharth/Modelica_DeviceDrivers/MDD_Practice/MDD_Practice.mo");
+getErrorString();
+
+translateModel(MDD_Practice.avr_io);
+getErrorString();
+

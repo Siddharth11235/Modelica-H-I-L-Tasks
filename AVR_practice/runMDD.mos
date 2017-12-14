@@ -1,0 +1,10 @@
+loadModel(Modelica);
+getErrorString();
+
+loadFile("/home/siddharth/OpenModelica_Tasks/Modelica_DeviceDrivers/Modelica_DeviceDrivers/package.mo");
+getErrorString();
+
+loadFile("/home/siddharth/OpenModelica_Tasks/Modelica_DeviceDrivers/MDD_Practice/Avr_PID.mo");
+getErrorString();
+translateModel(Avr_PID);
+getErrorString();
