@@ -1,6 +1,5 @@
 class IPC_testing
   import InterProcessCommunication.SharedMemory.*;
-  extends Modelica.Icons.Example;
   //extends Modelica.Mechanics.Rotational.Components;
   // Declaration of variables and constants
   Real motorInputValue "Value of input to the  Discrete PID Controller";
@@ -11,11 +10,11 @@ class IPC_testing
   //Address where to write, can be any number between 0 to 10
   Real motorOutputDummy "Dummy value to be returned by the SharedMemoryWrite function";
   Modelica.Blocks.Continuous.FirstOrder firstOrder1(T = 1, k = 1)  annotation(
-    Placement(visible = true, transformation(origin = {14, -14}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-50, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   firstOrder1.u = motorInputValue "The value of control signal (pidOutputValue) is acquired by the SharedMemoryRead function and it is assigned to the input of the DC motor";
   motorOutputValue = firstOrder1.y "The measured speed of the DC motor is assigned to pidInputValue, which is written into the shared memory using SharedMemoryWrite Function";
-  when sample(0, 0.05) then
+  when sample(0, 0.02) then
     motorInputValue = InterProcessCommunication.SharedMemory.SharedMemoryRead(motorInputIndex) "SharedMemoryRead Function reads the value from the shared memory, pointed by pidOutputIndex tag and assigns it to the input of the DC motor";
     motorOutputDummy = InterProcessCommunication.SharedMemory.SharedMemoryWrite(motorOutputIndex, motorOutputValue) "SharedMemoryWrite Function writes the value of measured speed into the shared memory, pointed by pidInputIndex tag";
   end when;

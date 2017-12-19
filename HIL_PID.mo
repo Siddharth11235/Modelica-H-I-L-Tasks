@@ -19,7 +19,7 @@ class HIL_PID
   Modelica.Blocks.Continuous.FirstOrder firstOrder1(T = 1, initType = Modelica.Blocks.Types.Init.NoInit, k = 1) annotation(
     Placement(visible = true, transformation(origin = {-26, 86}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica_DeviceDrivers.Blocks.OperatingSystem.SynchronizeRealtime synchronizeRealtime1 annotation(
-    Placement(visible = true, transformation(origin = {70, 76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {70, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(addInteger.pkgOut[1], serialSend.pkgIn) annotation(
     Line(points = {{-46, -35}, {-46, -79}}));

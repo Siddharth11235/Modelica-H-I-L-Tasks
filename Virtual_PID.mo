@@ -2,7 +2,7 @@
 class Virtual_PID
     Modelica.Blocks.Math.Feedback feedback1 annotation(
     Placement(visible = true, transformation(origin = {-44, 22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Continuous.FirstOrder firstOrder1(T = 4, initType = Modelica.Blocks.Types.Init.NoInit, k = 1, y_start = 0.1) annotation(
+  Modelica.Blocks.Continuous.FirstOrder firstOrder1(T = 1, initType = Modelica.Blocks.Types.Init.NoInit, k = 1, y_start = 0.1) annotation(
     Placement(visible = true, transformation(origin = {54, 22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Sine sine1(amplitude = 50, freqHz = 0.5, offset = 100) annotation(
     Placement(visible = true, transformation(origin = {-88, 22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

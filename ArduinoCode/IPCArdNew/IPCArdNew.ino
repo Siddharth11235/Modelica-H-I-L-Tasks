@@ -20,8 +20,8 @@ void loop()
       readVal += readStr[i];
     }
     inVal = readVal.toDouble(); //extract value
-    outVal = inVal/2+(double)analogRead(A5);
-    Serial.println("1,"+String(outVal)+"\n"); //send data in same format i.e. ending with \n character
+    outVal = inVal/2;
+    Serial.print("1," + String(outVal) + "\n"); //send data in same format i.e. ending with \n character
     delay(1);
   } 
 }

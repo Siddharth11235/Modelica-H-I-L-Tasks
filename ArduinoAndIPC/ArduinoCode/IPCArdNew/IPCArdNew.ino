@@ -1,13 +1,21 @@
+#include <PID_v1.h>
+
+double inVal, outVal,Setpoint;
+double consKp=1 , consKi=0, consKd=0;
+PID myPID(&inVal, &outVal, &Setpoint, consKp, consKi, consKd, DIRECT);
+
 void setup()
 {
   Serial.begin(115200); //serial begin
+  pinMode(A5, INPUT);
+  myPID.SetMode(AUTOMATIC);
 }
-
+  
 void loop()
 {
   String readStr = ""; //some variables
   String readVal = "";
-  double inVal, outVal;
+  
   
   if (Serial.available()){ //when serial data comes from modelica
   while(Serial.available()){
@@ -20,8 +28,9 @@ void loop()
       readVal += readStr[i];
     }
     inVal = readVal.toDouble(); //extract value
-    outVal = inVal/2+(double)analogRead(A5);
-    Serial.println("1,"+String(outVal)+"\n"); //send data in same format i.e. ending with \n character
+    Setpoint = ((double)analogRead(A5))/4; 
+    myPID.Compute();
+    Serial.print("1," + String(Setpoint) + "\n"); //send data in same format i.e. ending with \n character
     delay(1);
   } 
 }

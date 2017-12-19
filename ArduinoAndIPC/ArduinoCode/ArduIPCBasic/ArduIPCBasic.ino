@@ -1,9 +1,5 @@
-#include <PID_v1.h>
-double Input, Output, Setpoint;
-double kp, ki, kd;
-bool newData;
+double Input, Output;
 
-PID myPID(&Input, &Output, &Setpoint, kp, ki, kd, DIRECT);
 void setup()
 {
   Serial.begin(115200); //serial begin
@@ -27,11 +23,9 @@ void loop()
     {
       readVal += readStr[i];  
     }
-    Setpoint = ((double)analogRead(A5))/4; 
     Input = readVal.toDouble(); //extract value
-    myPID.Compute();
-    double x = Output;
-    Serial.println("1,"+String(x)+"\n"); //send data in same format i.e. ending with \n character
+    Output = Input/2;
+    Serial.println("1,"+String(Output)+"\n"); //send data in same format i.e. ending with \n character
     delay(5);
   } 
 }
