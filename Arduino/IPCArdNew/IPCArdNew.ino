@@ -1,13 +1,35 @@
-#include <PID_v1.h>
-double Input, Output, Setpoint;
-double kp, ki, kd;
-bool newData;
 
-PID myPID(&Input, &Output, &Setpoint, kp, ki, kd, DIRECT);
+
 void setup()
 {
   Serial.begin(115200); //serial begin
 }
+
+unsigned long lastTime;
+double Input, Output, Setpoint;
+double errSum, lastErr;
+double kp = 2;
+double ki = 0;
+double kd = 0;
+void Compute()
+{
+   /*How long since we last calculated*/
+   unsigned long now = millis();
+   double timeChange = (double)(now - lastTime);
+  
+   /*Compute all the working error variables*/
+   double error = Setpoint - Input;
+   errSum += (error * timeChange);
+   double dErr = (error - lastErr) / timeChange;
+  
+   /*Compute PID Output*/
+   Output = kp * error + ki * errSum + kd * dErr;
+  
+   /*Remember some variables for next time*/
+   lastErr = error;
+   lastTime = now;
+}
+  
 
 void loop()
 {
@@ -29,9 +51,8 @@ void loop()
     }
     Setpoint = ((double)analogRead(A5))/4; 
     Input = readVal.toDouble(); //extract value
-    myPID.Compute();
-    double x = Output;
-    Serial.println("1,"+String(x)+"\n"); //send data in same format i.e. ending with \n character
+    Compute();
+    Serial.println("1,"+String(Output)+"\n"); //send data in same format i.e. ending with \n character
     delay(5);
   } 
 }

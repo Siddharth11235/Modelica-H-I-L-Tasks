@@ -2,11 +2,11 @@
 class Virtual_PID
     Modelica.Blocks.Math.Feedback feedback1 annotation(
     Placement(visible = true, transformation(origin = {-44, 22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Continuous.FirstOrder firstOrder1(T = 1, initType = Modelica.Blocks.Types.Init.NoInit, k = 1, y_start = 0.1) annotation(
+  Modelica.Blocks.Continuous.FirstOrder firstOrder1(T = 1, initType = Modelica.Blocks.Types.Init.NoInit, k = 1, y_start = 1) annotation(
     Placement(visible = true, transformation(origin = {54, 22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Sine sine1(amplitude = 50, freqHz = 0.5, offset = 100) annotation(
+  Modelica.Blocks.Sources.Sine sine1(amplitude = 50, freqHz = 0.5, offset = 150) annotation(
     Placement(visible = true, transformation(origin = {-88, 22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Continuous.PID PID(Td = 10 ^ 20, Ti = 10 ^ 20, k = 1) annotation(
+  Modelica.Blocks.Continuous.PID PID(Nd = 0.5, Td = 10 ^ 10, Ti = 10 ^ 10, k = 2) annotation(
     Placement(visible = true, transformation(origin = {0, 22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(PID.y, firstOrder1.u) annotation(
@@ -18,5 +18,6 @@ equation
   connect(firstOrder1.y, feedback1.u2) annotation(
     Line(points = {{66, 22}, {80, 22}, {80, 0}, {-46, 0}, {-46, 14}, {-44, 14}, {-44, 14}}, color = {0, 0, 127}));
   annotation(
-    uses(Modelica(version = "3.2.2")));
+    uses(Modelica(version = "3.2.2")),
+    Diagram);
 end Virtual_PID;

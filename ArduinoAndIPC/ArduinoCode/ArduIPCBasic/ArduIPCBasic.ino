@@ -4,7 +4,10 @@ void setup()
 {
   Serial.begin(115200); //serial begin
 }
-
+void func()
+{
+  Output = ((double)analogRead(A5))/4; 
+}
 void loop()
 {
   String readStr = ""; //some variables
@@ -24,7 +27,7 @@ void loop()
       readVal += readStr[i];  
     }
     Input = readVal.toDouble(); //extract value
-    Output = Input/2;
+    func();
     Serial.println("1,"+String(Output)+"\n"); //send data in same format i.e. ending with \n character
     delay(5);
   } 
