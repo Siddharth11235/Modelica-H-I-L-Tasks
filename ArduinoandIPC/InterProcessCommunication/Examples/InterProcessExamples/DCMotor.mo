@@ -3,7 +3,7 @@ within InterProcessCommunication.Examples.InterProcessExamples;
 model DCMotor
   extends Modelica.Icons.Example;
   //extends Modelica.Mechanics.Rotational.Components;
-  Modelica.Mechanics.Rotational.Components.Inertia load(J = 10, phi(fixed = true, start = 0), w(fixed = true, start = 0)) annotation(
+  Modelica.Mechanics.Rotational.Components.Inertia load(J = 100, a(fixed = false), phi(fixed = false, start = 0), w(fixed = false, start = 0)) annotation(
     Placement(transformation(extent = {{67, 0}, {87, 20}})));
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speed annotation(
     Placement(transformation(extent = {{-10, -10}, {6, 6}}, rotation = -90, origin = {94, -7})));
@@ -16,7 +16,8 @@ model DCMotor
 
   Real motorInputValue "Value of input to the  Discrete PID Controller" ;
   Real motorOutputValue  "Value of output of Discrete PID Controller" ;
-  Integer motorInputIndex = 1;//Address from where to read, can be any number between 0 to 10, it must match the address given to output value in second model i.e. DiscretePID_SM_Example in this case 
+  Integer motorInputIndex = 1;
+  //Address from where to read, can be any number between 0 to 10, it must match the address given to output value in second model i.e. DiscretePID_SM_Example in this case
   Integer motorOutputIndex = 1;//Address where to write, can be any number between 0 to 10
   Real motorOutputDummy "Dummy value to be returned by the SharedMemoryWrite function";
   

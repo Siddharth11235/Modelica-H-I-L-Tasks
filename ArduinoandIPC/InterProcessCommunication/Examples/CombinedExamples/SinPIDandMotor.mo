@@ -2,7 +2,7 @@ within InterProcessCommunication.Examples.CombinedExamples;
 
 model SinPIDandMotor"PID and Motor combine model with Sine input"
 extends Modelica.Icons.Example;
- Modelica.Blocks.Continuous.PID PID(Td = 0, Ti = 10 ^ 20, k = 2)  annotation(
+ Modelica.Blocks.Continuous.PID PID(Td = 1 / 5, Ti = 100, k = 1)  annotation(
     Placement(visible = true, transformation(origin = {-30, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Feedback feedback1 annotation(
     Placement(visible = true, transformation(origin = {-62, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -12,7 +12,7 @@ extends Modelica.Icons.Example;
     Placement(visible = true, transformation(origin = {70, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor1 annotation(
     Placement(visible = true, transformation(origin = {90, -28}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Blocks.Sources.Sine sine1(amplitude = 100, freqHz = 1)  annotation(
+  Modelica.Blocks.Sources.Sine sine1(amplitude = 100, freqHz = 1 / 7.2, offset = 100)  annotation(
     Placement(visible = true, transformation(origin = {-90, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(feedback1.u2, speedSensor1.w) annotation(
