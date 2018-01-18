@@ -1,4 +1,4 @@
-double Input, Output;
+double Input=0, Output=0;
 
 void setup()
 {
@@ -6,7 +6,7 @@ void setup()
 }
 void func()
 {
-  Output = Input; 
+  Output =  ((double)analogRead(A5))/4;  
 }
 void loop()
 {

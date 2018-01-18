@@ -8,7 +8,30 @@
 #include <string.h>
 #include <stdarg.h> //header for including unknown arguments
 #include "SerialMI.h"
+/* 
+const void PortAddress(char line[14])
+{
 
+    int linenr;
+    FILE *pipe;
+    
+    Get a pipe where the output from the scripts comes in 
+    pipe = popen("bash test_bash.sh", "r");
+    if (pipe == NULL) {  /* check for errors 
+        perror("No device found"); /* report error message 
+            }
+
+    /* Read script output from the pipe line by line 
+    linenr = 1;
+    while (fgets(line, 14, pipe) != NULL) {
+       // printf("Script output line: %s", line);
+        ++linenr;
+    }
+    
+    /* Once here, out of the loop, the script has ended. 
+    pclose(pipe); /* Close the pipe */
+     /* return with exit code indicating success. 
+}*/
 struct DataExchange {
     char sendVal[10][32];
     double getVal[10];
@@ -45,11 +68,12 @@ int main()
 {
 	char S_Port[32]="";
     int S_Baud;
-    printf("Serial Port (e.g. /dev/ttyUSB0) : ");
+	//PortAddress(S_Port);
+   	printf("Serial Port:");
     scanf("%s", S_Port);
     printf("Baud Rate (e.g. 115200) : ");
     scanf("%d", &S_Baud);
-    serialBegin(S_Port, S_Baud);
+    serialBegin(S_Port,S_Baud);
     // serialBegin("/dev/ttyACM0", 115200);
     serialFlush();
     shmAccess();
