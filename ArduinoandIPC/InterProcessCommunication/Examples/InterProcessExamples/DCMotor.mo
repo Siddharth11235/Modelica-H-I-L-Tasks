@@ -3,7 +3,7 @@ within InterProcessCommunication.Examples.InterProcessExamples;
 model DCMotor
   extends Modelica.Icons.Example;
   //extends Modelica.Mechanics.Rotational.Components;
-  Modelica.Mechanics.Rotational.Components.Inertia load(J = 100, a(fixed = false), phi(fixed = false, start = 0), w(fixed = false, start = 0)) annotation(
+  Modelica.Mechanics.Rotational.Components.Inertia load(J = 5, a(fixed = false), phi(fixed = false, start = 0), w(fixed = false, start = 0)) annotation(
     Placement(transformation(extent = {{67, 0}, {87, 20}})));
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speed annotation(
     Placement(transformation(extent = {{-10, -10}, {6, 6}}, rotation = -90, origin = {94, -7})));
@@ -59,7 +59,7 @@ The values of control signal and speed of the DC motor are read from and written
 </p>
 
 </html>"),
-    experiment(StopTime = 30, StartTime = 0, Tolerance = 1e-06, Interval = 0.01),
+    experiment(StopTime = 60, StartTime = 0, Tolerance = 1e-06, Interval = 0.01),
     __OpenModelica_simulationFlags(jacobian = "coloredNumerical", s = "dassl", lv = "LOG_STATS", nls = "homotopy", clock = "RT"));
 
 end DCMotor;

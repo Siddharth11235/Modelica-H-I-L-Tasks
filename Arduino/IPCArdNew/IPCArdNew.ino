@@ -8,14 +8,14 @@ void setup()
 unsigned long lastTime;
 double Input, Output, Setpoint;
 double errSum, lastErr;
-double kp = 2;
+double kp = 20 ;
 double ki = 0;
 double kd = 0;
 void Compute()
 {
    /*How long since we last calculated*/
    unsigned long now = millis();
-   double timeChange = (double)(now - lastTime);
+   double timeChange = (double)(now - lastTime)/10;
   
    /*Compute all the working error variables*/
    double error = Setpoint - Input;
@@ -49,7 +49,16 @@ void loop()
     {
       readVal += readStr[i];  
     }
-    Setpoint = ((double)analogRead(A5))/4; 
+    //Setpoint = 100*sin(millis()*3.1412/(20*180))+100; This is for the case where we may not have a FG on hand.
+    if (millis() < 5000)
+    {
+      Setpoint = 0;
+    }
+    else
+    {
+      Setpoint = double(analogRead(A5))/4;  
+    }
+    
     Input = readVal.toDouble(); //extract value
     Compute();
     Serial.println("1,"+String(Output)+"\n"); //send data in same format i.e. ending with \n character

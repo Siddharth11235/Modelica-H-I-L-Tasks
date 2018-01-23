@@ -1,7 +1,7 @@
 #ifndef SerialMI_H_
 #define SerialMI_H_
 
-#include <stdio.h>
+//#include <stdio.h>
 #include <fcntl.h> //file control definitions
 #include <termios.h> //POSIX terminal control definitions
 #include <unistd.h> //UNIX standard definitions
