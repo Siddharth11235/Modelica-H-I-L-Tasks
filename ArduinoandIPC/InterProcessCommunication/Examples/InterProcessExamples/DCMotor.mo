@@ -13,16 +13,28 @@ model DCMotor
     Placement(visible = true, transformation(origin = {50, -44}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
  
   // Declaration of variables and constants
-
+  Real ReferenceOp;
   Real motorInputValue "Value of input to the  Discrete PID Controller" ;
   Real motorOutputValue  "Value of output of Discrete PID Controller" ;
   Integer motorInputIndex = 1;
   //Address from where to read, can be any number between 0 to 10, it must match the address given to output value in second model i.e. DiscretePID_SM_Example in this case
   Integer motorOutputIndex = 1;//Address where to write, can be any number between 0 to 10
   Real motorOutputDummy "Dummy value to be returned by the SharedMemoryWrite function";
+ //Functions from serial_read
+  Modelica_DeviceDrivers.Blocks.Packaging.SerialPackager.UnpackUnsignedInteger unpackInt(nu = 1, width = 8) annotation(
+    Placement(visible = true, transformation(extent = {{-90, -6}, {-70, 14}}, rotation = 0)));
+  Modelica_DeviceDrivers.Blocks.Packaging.SerialPackager.GetInteger getInteger annotation(
+    Placement(visible = true, transformation(extent = {{-90, -62}, {-70, -42}}, rotation = 0)));
+  Modelica_DeviceDrivers.Blocks.Communication.SerialPortReceive serialReceive(Serial_Port = "/dev/ttyACM1", autoBufferSize = true, baud = Modelica_DeviceDrivers.Utilities.Types.SerialBaudRate.B115200, enableExternalTrigger = false, sampleTime = 0.01)  annotation(
+    Placement(visible = true, transformation(origin = {-80, 58}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+
   
 equation
-
+ connect(unpackInt.pkgOut[1], getInteger.pkgIn) annotation(
+    Line(points = {{-80, -7}, {-80, -41}}, thickness = 0.5));
+ connect(serialReceive.pkgOut, unpackInt.pkgIn) annotation(
+    Line(points = {{-80, 47}, {-80, 15}}));
+ ReferenceOp = unpackInt.y/4;
   connect(speed.w, y) annotation(
     Line(points = {{92, -14}, {90, -14}, {90, -44}, {50, -44}, {50, -44}}, color = {0, 0, 127}));
   connect(speed.flange, load.flange_b) annotation(
@@ -37,7 +49,7 @@ equation
     motorInputValue = InterProcessCommunication.SharedMemory.SharedMemoryRead(motorInputIndex)         "SharedMemoryRead Function reads the value from the shared memory, pointed by pidOutputIndex tag and assigns it to the input of the DC motor";
     motorOutputDummy = InterProcessCommunication.SharedMemory.SharedMemoryWrite(motorOutputIndex, motorOutputValue) "SharedMemoryWrite Function writes the value of measured speed into the shared memory, pointed by pidInputIndex tag" ;
   end when;
-  
+//equations from serial_read
   annotation(
     Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-140, -100}, {140, 100}}, initialScale = 0.1), graphics = {Text(lineColor = {255, 0, 0}, extent = {{40, 37}, {90, 31}}, textString = "plant"), Rectangle(lineColor = {255, 0, 0}, extent = {{32, 40}, {104, -40}})}),
     Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {2, 2})),

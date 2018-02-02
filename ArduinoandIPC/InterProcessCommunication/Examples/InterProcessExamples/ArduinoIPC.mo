@@ -21,5 +21,5 @@ Real ModelicaInput (start = 0,fixed = true );
     end when;
    OP =  ModelicaOutput - ModelicaInput;
 annotation(
-    experiment(StartTime = 0, StopTime = 20, Tolerance = 1e-6, Interval = 0.002));
+    experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-6, Interval = 0.002));
 end ArduinoIPC;

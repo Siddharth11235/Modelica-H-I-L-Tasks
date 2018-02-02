@@ -5,7 +5,7 @@ class Serial_read
     Placement(visible = true, transformation(extent = {{4, -4}, {24, 16}}, rotation = 0)));
   Modelica_DeviceDrivers.Blocks.Packaging.SerialPackager.GetInteger getInteger annotation(
     Placement(visible = true, transformation(extent = {{4, -66}, {24, -46}}, rotation = 0)));
-  Modelica_DeviceDrivers.Blocks.Communication.SerialPortReceive serialReceive(Serial_Port = "/dev/ttyACM0", autoBufferSize = true, baud = Modelica_DeviceDrivers.Utilities.Types.SerialBaudRate.B115200, enableExternalTrigger = false, sampleTime = 0.002)  annotation(
+  Modelica_DeviceDrivers.Blocks.Communication.SerialPortReceive serialReceive(Serial_Port = "/dev/ttyACM1", autoBufferSize = true, baud = Modelica_DeviceDrivers.Utilities.Types.SerialBaudRate.B115200, enableExternalTrigger = false, sampleTime = 0.002)  annotation(
     Placement(visible = true, transformation(origin = {14, 54}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 equation
   connect(serialReceive.pkgOut, unpackInt.pkgIn) annotation(

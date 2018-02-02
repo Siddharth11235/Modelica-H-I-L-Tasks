@@ -6,7 +6,8 @@ void setup()
 }
 void func()
 {
-  Output =  ((double)analogRead(A5))/4;  
+  Output =  ((double)analogRead(A5));  
+  //Output = 100*sin(millis()*3.1412/(20*180))+100;// This is for the case where we may not have a FG on hand.
 }
 void loop()
 {

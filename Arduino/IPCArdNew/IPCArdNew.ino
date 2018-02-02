@@ -49,19 +49,15 @@ void loop()
     {
       readVal += readStr[i];  
     }
-    //Setpoint = 100*sin(millis()*3.1412/(20*180))+100; This is for the case where we may not have a FG on hand.
-    if (millis() < 5000)
-    {
-      Setpoint = 0;
-    }
-    else
-    {
+  
+   
+      //Setpoint = 100*sin(millis()*3.1412/(20*180))+100;// This is for the case where we may not have a FG on hand.
       Setpoint = double(analogRead(A5))/4;  
-    }
+
     
     Input = readVal.toDouble(); //extract value
     Compute();
-    Serial.println("1,"+String(Output)+"\n"); //send data in same format i.e. ending with \n character
+    Serial.println("1,"+String(Output)+"\n"+"2,"+String(Setpoint)+"\n"); //send data in same format i.e. ending with \n character
     delay(5);
   } 
 }
