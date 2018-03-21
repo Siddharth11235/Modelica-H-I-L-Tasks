@@ -8,8 +8,10 @@ void setup()
 unsigned long lastTime;
 double Input, Output, Setpoint;
 double errSum, lastErr;
-double kp = 10 ;
-double ki = 0.1;
+//double Ti = 2;
+//double Td = 0.5;
+double kp = 62;
+double ki =0;
 double kd = 0.01;
 void Compute()
 {
@@ -52,7 +54,7 @@ void loop()
   
    
       //Setpoint = 100*sin(millis()*3.1412/(20*180))+100;// This is for the case where we may not have a FG on hand.
-      Setpoint = double(analogRead(A5))/4;  
+      Setpoint = double(analogRead(A5));  
 
     
     Input = readVal.toDouble(); //extract value

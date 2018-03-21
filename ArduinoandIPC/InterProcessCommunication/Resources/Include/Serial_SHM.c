@@ -41,14 +41,22 @@ char *shmRead(int num2)
     return returnVal;
 }					
 
-int main()
+int main(int argc, char *argv[])
 {
+    //The command line argument is meant to be the baudrate.
+    if(argc != 2) 
+    {
+        printf("Wrong number of input arguments");
+        exit(1);
+     }
+
+
 	char S_Port[32]="";
-    int S_Baud;
-    printf("Serial Port (e.g. /dev/ttyUSB0) : ");
-    scanf("%s", S_Port);
-    printf("Baud Rate (e.g. 115200) : ");
-    scanf("%d", &S_Baud);
+    int S_Baud = atoi(argv[1]);;
+    //printf("Serial Port (e.g. /dev/ttyUSB0) : ");
+    scanf("%s", S_Port);    
+    //printf("Baud Rate (e.g. 115200) : ");
+    
     serialBegin(S_Port, S_Baud);
     // serialBegin("/dev/ttyACM0", 115200);
     serialFlush();
