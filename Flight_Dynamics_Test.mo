@@ -30,23 +30,24 @@ Real Force[3] = {0,0,9.8};
 Real Moment[3] = {0,0,1};
 parameter Real mass = 1;
 parameter Real g[3] = {0, 0, -9.8};
-parameter Real J[3,3] = mass*{{1, 0, 0},{0,1,0},{0,0,1}};
-Real acc[3];
-Real vel[3](each start = 0,fixed = true );
-Real pos[3](each start = 0,fixed = true );
-Real ang_acc[3];
-Real ang_vel[3](start = {1.0,0,0},fixed = true );
-Real angles[3](each start = 0,fixed = true );
-Real Omega[3,3] = skew(ang_vel);
-Real DCM[3,3] = T1(angles[1])*T2(angles[2])*T3(angles[3]);
+parameter Real J[3,3] = mass*{{1, 0, 0},{0,1,0},{0,0,1}};//Moment of Inertia
+Real vdot[3];//Linear Acceleration
+Real v[3](each start = 0, each fixed = true );//Velocity
+Real pos[3](each start = 0,each fixed = true );//Position (Displacement)
+Real omegadot[3];//Angular acceleration
+Real omega[3](start = {1.0,0,0},each fixed = true );//Angular velocity around the CM
+Real angles[3](each start = 0,each fixed = true );//Angular displacments
+Real OMEGA[3,3] = skew(omega);//Skew symmetric matrix form of the angular velocity term
+Real DCM[3,3] = T1(angles[1])*T2(angles[2])*T3(angles[3]);//The direction cosine matrix
+Real Rotation_mat[3,3] = {{1, tan(angles[2])*sin(angles[1]), tan(angles[2])*cos(angles[1])}, {0, cos(angles[1]), -sin(angles[1])},{0, sin(angles[1])/cos(angles[2]) , cos(angles[1])/cos(angles[2])}};
 Real euler_rates[3];
 
 equation
-acc = (1/mass)*Force + DCM*g + Omega*vel;
-der(vel) = acc;
-der(pos) = vel;
-ang_acc = inv(J)*(Moment - Omega*J*ang_vel);
-der(ang_vel) = ang_acc;
-euler_rates = inv(DCM)*ang_vel;
+vdot = (1/mass)*Force + DCM*g + OMEGA*v;
+der(v) = vdot;
+der(pos) = v;
+omegadot = inv(J)*(Moment - OMEGA*J*omega);
+der(omega) = omegadot;
+euler_rates = inv(Rotation_mat)*omega;
 der(angles) = euler_rates;
 end Flight_Dynamics_Test;
