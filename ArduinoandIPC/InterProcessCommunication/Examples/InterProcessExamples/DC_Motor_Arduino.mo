@@ -1,6 +1,6 @@
 within InterProcessCommunication.Examples.InterProcessExamples;
 
-model DCMotor
+model DC_Motor_Arduino
   extends Modelica.Icons.Example;
   //extends Modelica.Mechanics.Rotational.Components;
   Modelica.Mechanics.Rotational.Components.Inertia load(J = 5, a(fixed = false), phi(fixed = false, start = 0), w(fixed = false, start = 0)) annotation(
@@ -34,7 +34,7 @@ equation
     Line(points = {{-80, -7}, {-80, -41}}, thickness = 0.5));
  connect(serialReceive.pkgOut, unpackInt.pkgIn) annotation(
     Line(points = {{-80, 47}, {-80, 15}}));
- ReferenceOp = unpackInt.y/4;
+ ReferenceOp = unpackInt.y*4;//For the difference in the 8-bit reception on MDD and the 10-bit data.
   connect(speed.w, y) annotation(
     Line(points = {{92, -14}, {90, -14}, {90, -44}, {50, -44}, {50, -44}}, color = {0, 0, 127}));
   connect(speed.flange, load.flange_b) annotation(
@@ -54,7 +54,6 @@ equation
     Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-140, -100}, {140, 100}}, initialScale = 0.1), graphics = {Text(lineColor = {255, 0, 0}, extent = {{40, 37}, {90, 31}}, textString = "plant"), Rectangle(lineColor = {255, 0, 0}, extent = {{32, 40}, {104, -40}})}),
     Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {2, 2})),
     Documentation(info = "<html>
-
 <p>
 <b>Inter Process Communication Library V1.0</b><br /><br />
 The <b>DCMotor</b> model contains the DC motor, which reads the control signal from shared memory (given by discrete PID controller) and the speed sensor measures the resulting rotation. The measured speed from speed sensor is written into the shared memory.
@@ -62,16 +61,14 @@ The <b>DCMotor</b> model contains the DC motor, which reads the control signal f
  </p>
  
  <p>
-The values of control signal and speed of the DC motor are read from and written into the shared memory at sampling interval of 0.05 seconds.  <a href=\"modelica://InterProcessCommunication.SharedMemory.SharedMemoryRead\"> SharedMemoryRead </a> and <a href=\"modelica://InterProcessCommunication.SharedMemory.SharedMemoryWrite\"> SharedMemoryWrite </a> functions are used to read the control signal from the shared memory and write the measured speed into the shared memory respectively. The motorOutputIndex and motorInputIndex variables serve as index of the tag i.e. motorInputIndex points to the value of control signal and motorOutputIndex points to the value of speed of the DC motor. The value of the control signal, returned by the <a href=\"modelica://InterProcessCommunication.SharedMemory.SharedMemoryRead\"> SharedMemoryRead </a> function is stored in the motorInputValue variable. The value of the motorInputValue is in turn assigned to the torque.tau variable, which serves as an input to the DC motor. Similarly, the value of the measured speed is  assigned to motorOutputvalue variable. Therefore, the value of the motorOutputvalue is written into shared memory using <a href=\"modelica://InterProcessCommunication.SharedMemory.SharedMemoryWrite\"> SharedMemoryWrite </a> function. 
+The values of control signal and speed of the DC motor are read from and written into the shared memory at sampling interval of 0.01 seconds.  <a href=\"modelica://InterProcessCommunication.SharedMemory.SharedMemoryRead\"> SharedMemoryRead </a> and <a href=\"modelica://InterProcessCommunication.SharedMemory.SharedMemoryWrite\"> SharedMemoryWrite </a> functions are used to read the control signal from the shared memory and write the measured speed into the shared memory respectively. The motorOutputIndex and motorInputIndex variables serve as index of the tag i.e. motorInputIndex points to the value of control signal and motorOutputIndex points to the value of speed of the DC motor. The value of the control signal, returned by the <a href=\"modelica://InterProcessCommunication.SharedMemory.SharedMemoryRead\"> SharedMemoryRead </a> function is stored in the motorInputValue variable. The value of the motorInputValue is in turn assigned to the torque.tau variable, which serves as an input to the DC motor. Similarly, the value of the measured speed is  assigned to motorOutputvalue variable. Therefore, the value of the motorOutputvalue is written into shared memory using <a href=\"modelica://InterProcessCommunication.SharedMemory.SharedMemoryWrite\"> SharedMemoryWrite </a> function. 
 </p>
-
 <p>
 <b>License:</b> OSMC-PL v1.2 2017<br /><br />
 <b>Credits:</b> ModeliCon Infotech Team <br />Ankur Gajjar <br />Shubham Patne <br />Jal Panchal <br />Ritesh Sharma <br />Pavan P <br /> 
 </p>
-
 </html>"),
-    experiment(StopTime = 60, StartTime = 0, Tolerance = 1e-06, Interval = 0.01),
+    experiment(StopTime = 40, StartTime = 0, Tolerance = 1e-06, Interval = 0.01),
     __OpenModelica_simulationFlags(jacobian = "coloredNumerical", s = "dassl", lv = "LOG_STATS", nls = "homotopy", clock = "RT"));
 
-end DCMotor;
+end DC_Motor_Arduino;

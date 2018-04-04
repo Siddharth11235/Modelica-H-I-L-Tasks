@@ -16,12 +16,9 @@ annotation( Documentation(info = "<html>
 *Shared memory for interprocess data exchange.<br /> 
 *RS232 serial communication protocol for inter system data exchange.<br /> 
 <u>Hardware:</u><br /> 
-*Two PL2303 USB to TTL serial converter modules.<br />
-<img src=\"modelica://InterProcessCommunication/Images/pl2303.jpg\" style=\"width:100px;height:50px;\"><br />
-*4 jumper wires (F-F).<br />
-<img src=\"modelica://InterProcessCommunication/Images/jwff.jpg\" style=\"width:100px;height:50px;\"><br />
-*Two Linux Machines or<br />
-*Two Raspberry Pi’s.<br />
+*A linux machine<br />
+*One serial connection cable.<br />
+*Two Arduinos (second optional).<br />
 </p>
 
 <p>
@@ -30,7 +27,7 @@ Library <b>InterProcessCommunication</b> is a Modelica package, which enables In
 </p>
 
 <p>
-The overall objective of the library InterProcessCommunication is to demonstrate the closed loop speed tracking of DC motor using discrete PID controller, with the help of shared memory and serial communication. The <a href=\"modelica://InterProcessCommunication.Examples.InterProcessExamples.DCMotor\">DCMotor</a> model contains the DC motor, along with a speed sensor. The speed sensor measures the speed of the DC motor, which is written into the shared memory. A serial comunication executable Serial_SHM running in background reads this value from shared memory and transfers it to serial port and then to other PC via serial communication device. The <a href=\"modelica://InterProcessCommunication.Examples.InterProcessExamples.DiscretePID\"> DiscretePID</a> model acquires the measured speed of the DC motor from the shared memory. Based on the difference between setpoint and measured speed, the Discerete PID controller generates control signal. This control signal is written into the shared memory, which is acquired by the DCMotor package. The control signal acquired by the DCMotor package, acts as an input to the DC motor. Therefore, the complete closed loop speed tracking of DC motor can be achieved.
+The overall objective of the library InterProcessCommunication is to demonstrate the closed loop speed tracking of DC motor using discrete PID controller, with the help of shared memory and serial communication. The <a href=\"modelica://InterProcessCommunication.Examples.InterProcessExamples.DCMotor\">DCMotor</a> model contains the DC motor, along with a speed sensor. The speed sensor measures the speed of the DC motor, which is written into the shared memory. A serial comunication executable Serial_SHM running in background reads this value from shared memory and transfers it to serial port and then to other PC via serial communication device. The <a href=\"modelica://InterProcessCommunication.Examples.InterProcessExamples.DC_Motor_Arduino\"> DC_Motor</a> model acquires the measured speed of the DC motor from the shared memory. Based on the difference between setpoint and measured speed, the Discerete PID controller generates control signal. This control signal is written into the shared memory, which is acquired by the DCMotor package. The control signal acquired by the DCMotor package, acts as an input to the DC motor. Therefore, the complete closed loop speed tracking of DC motor can be achieved.
 </p>
 
 <p>

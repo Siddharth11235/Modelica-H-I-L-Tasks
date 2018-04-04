@@ -8,11 +8,9 @@ void setup()
 unsigned long lastTime;
 double Input, Output, Setpoint;
 double errSum, lastErr;
-//double Ti = 2;
-//double Td = 0.5;
-double kp = 62;
+double kp = 15;
 double ki =0;
-double kd = 0.01;
+double kd =0;
 void Compute()
 {
    /*How long since we last calculated*/
