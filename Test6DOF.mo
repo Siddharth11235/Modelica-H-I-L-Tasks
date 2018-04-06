@@ -4,6 +4,6 @@ model Test6DOF
   Flight6DOF flight6DOF1 annotation(
     Placement(visible = true, transformation(origin = {6, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   equation
-  flight6DOF1.u1 = F;
-  flight6DOF1.u2 = M;
+  flight6DOF1.Force = F;
+  flight6DOF1.Moment = M;
 end Test6DOF;

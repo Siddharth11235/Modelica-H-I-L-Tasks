@@ -4,12 +4,7 @@ import Modelica.Math.Matrices.*;
 import SI=Modelica.SIunits;
 import Modelica.Blocks.Interfaces.*;
 
-RealInput u1[3]; //Force
-RealInput u2[3]; //Momentum
-RealOutput y1[3]; //Linear velocity
-RealOutput y2[3]; //Displacement
-RealOutput y3[3]; //Angular Velocity
-RealOutput y4[3]; //Angular displacement;
+
 function T1
   
  input Real a;
@@ -32,17 +27,27 @@ algorithm
   T := {{ cos(a), sin(a), 0},{-sin(a), cos(a), 0},{      0,      0, 1}};
 end T3;
 
-Real Force[3] = u1;
-Real Moment[3] = u2;
+
+
+RealInput Force[3]annotation(
+    Placement(visible = true, transformation(origin = {-120, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-106, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Force
+RealInput Moment[3]annotation(
+    Placement(visible = true, transformation(origin = {-120, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-106, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Momentum
+RealOutput v[3](each start = 0, each fixed = true ) annotation(
+    Placement(visible = true, transformation(origin = {110, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); //Linear velocity
+RealOutput pos[3](each start = 0,each fixed = true )annotation(
+    Placement(visible = true, transformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, 34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));//Position (Displacement) //Displacement
+RealOutput omega[3](start = {1.0,0,0},each fixed = true )annotation(
+    Placement(visible = true, transformation(origin = {110, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); //Angular velocity around the CM
+RealOutput angles[3](each start = 0,each fixed = true )annotation(
+    Placement(visible = true, transformation(origin = {110, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); //Angular displacement
+
+
 parameter Real mass = 1;
 parameter Real g[3] = {0, 0, -9.8};
 parameter Real J[3,3] = mass*{{1, 0, 0},{0,1,0},{0,0,1}};//Moment of Inertia
 Real vdot[3];//Linear Acceleration
-Real v[3](each start = 0, each fixed = true );//Velocity
-Real pos[3](each start = 0,each fixed = true );//Position (Displacement)
 Real omegadot[3];//Angular acceleration
-Real omega[3](start = {1.0,0,0},each fixed = true );//Angular velocity around the CM
-Real angles[3](each start = 0,each fixed = true );//Angular displacments
 Real OMEGA[3,3] = skew(omega);//Skew symmetric matrix form of the angular velocity term
 Real DCM[3,3] = T1(angles[1])*T2(angles[2])*T3(angles[3]);//The direction cosine matrix
 Real Rotation_mat[3,3] = {{1, tan(angles[2])*sin(angles[1]), tan(angles[2])*cos(angles[1])}, {0, cos(angles[1]), -sin(angles[1])},{0, sin(angles[1])/cos(angles[2]) , cos(angles[1])/cos(angles[2])}};
@@ -55,11 +60,7 @@ equation
   der(omega) = omegadot;
   euler_rates = inv(Rotation_mat) * omega;
   der(angles) = euler_rates;
-algorithm
-y1 := v;
-y2 := pos;
-y3 := omega;
-y4 := angles;
+
 annotation(
     uses(Modelica(version = "3.2.2")));
 end Flight6DOF;
