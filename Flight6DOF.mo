@@ -55,10 +55,10 @@ Real euler_rates[3];
 equation
   vdot = 1 / mass * Force + DCM * g + OMEGA * v;
   der(v) = vdot;
-  der(pos) = v;
+  der(pos) = inv(DCM)*v;
   omegadot = inv(J) * (Moment- OMEGA * J * omega);
   der(omega) = omegadot;
-  euler_rates = inv(Rotation_mat) * omega;
+  euler_rates = Rotation_mat * omega;
   der(angles) = euler_rates;
 
 annotation(

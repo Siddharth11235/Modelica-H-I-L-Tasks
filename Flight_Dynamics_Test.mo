@@ -37,7 +37,7 @@ Real pos[3](each start = 0,each fixed = true );//Position (Displacement)
 Real omegadot[3];//Angular acceleration
 Real omega[3](start = {1.0,0,0},each fixed = true );//Angular velocity around the CM
 Real angles[3](each start = 0,each fixed = true );//Angular displacments
-Real OMEGA[3,3] = skew(omega);//Skew symmetric matrix form of the angular velocity term
+Real OMEGA[3,3] = -skew(omega);//Skew symmetric matrix form of the angular velocity term
 Real DCM[3,3] = T1(angles[1])*T2(angles[2])*T3(angles[3]);//The direction cosine matrix
 Real Rotation_mat[3,3] = {{1, tan(angles[2])*sin(angles[1]), tan(angles[2])*cos(angles[1])}, {0, cos(angles[1]), -sin(angles[1])},{0, sin(angles[1])/cos(angles[2]) , cos(angles[1])/cos(angles[2])}};
 Real euler_rates[3];
@@ -45,9 +45,9 @@ Real euler_rates[3];
 equation
 vdot = (1/mass)*Force + DCM*g + OMEGA*v;
 der(v) = vdot;
-der(pos) = v;
+der(pos) = inv(DCM)*v;
 omegadot = inv(J)*(Moment - OMEGA*J*omega);
 der(omega) = omegadot;
-euler_rates = inv(Rotation_mat)*omega;
+euler_rates = Rotation_mat*omega;
 der(angles) = euler_rates;
 end Flight_Dynamics_Test;

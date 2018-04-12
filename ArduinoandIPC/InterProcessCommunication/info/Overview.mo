@@ -23,28 +23,22 @@ annotation( Documentation(info = "<html>
 
 <p>
 <b>Introduction:</b><br />
-Library <b>InterProcessCommunication</b> is a Modelica package, which enables Interprocess Communication (IPC) between two different processes using shared memory and Intersystem Communication between two different PC's using serial Communication. To demonstrate the IPC using shared memory, the <a href=\"modelica://InterProcessCommunication.Examples.InterProcessExamples.DCMotor\"> DCMotor</a> model and the <a href=\"modelica://InterProcessCommunication.Examples.InterProcessExamples.DiscretePID\"> DiscretePID</a> controller model have been considered as two different processes. For inter system communication you can run DiscretePID package on one system and DCMotor package on another system.
+Library <b>InterProcessCommunication</b> is a Modelica package, which enables Interprocess Communication (IPC) between two different processes using shared memory and Intersystem Communication between two different PC's using serial Communication. To demonstrate the IPC using shared memory, the PID controller model on the arduino and the DCMotor process model on OpenModelica have been considered as two different processes. For inter system communication you can run IPCArdNew.ino package on the arduino and DCMotor package on the PC.
 </p>
 
 <p>
-The overall objective of the library InterProcessCommunication is to demonstrate the closed loop speed tracking of DC motor using discrete PID controller, with the help of shared memory and serial communication. The <a href=\"modelica://InterProcessCommunication.Examples.InterProcessExamples.DCMotor\">DCMotor</a> model contains the DC motor, along with a speed sensor. The speed sensor measures the speed of the DC motor, which is written into the shared memory. A serial comunication executable Serial_SHM running in background reads this value from shared memory and transfers it to serial port and then to other PC via serial communication device. The <a href=\"modelica://InterProcessCommunication.Examples.InterProcessExamples.DC_Motor_Arduino\"> DC_Motor</a> model acquires the measured speed of the DC motor from the shared memory. Based on the difference between setpoint and measured speed, the Discerete PID controller generates control signal. This control signal is written into the shared memory, which is acquired by the DCMotor package. The control signal acquired by the DCMotor package, acts as an input to the DC motor. Therefore, the complete closed loop speed tracking of DC motor can be achieved.
+The overall objective of the library InterProcessCommunication is to demonstrate the closed loop speed tracking of DC motor using discrete PID controller, with the help of shared memory and serial communication. The <a href=\"modelica://InterProcessCommunication.Examples.InterProcessExamples.DC_Motor_Arduino\">DCMotor</a> model contains the DC motor, along with a speed sensor. The speed sensor measures the speed of the DC motor, which is written into the shared memory. A serial comunication executable Serial_SHM running in background reads this value from shared memory and transfers it to serial port and then to the arduino via serial communication device. The Arduino acquires the measured speed of the DC motor from the shared memory. Based on the difference between setpoint and measured speed, the PID controller flashed on the arduino generates a control signal. This control signal is written into the shared memory, which is acquired by the DCMotor package. The control signal acquired by the DCMotor package, acts as an input to the DC motor. Therefore, the complete closed loop speed tracking of DC motor can be achieved.
 </p>
+
 
 <p>
-The following diagram shows how the closed loop speed tracking of dc motor can be achieved using discrete PID controller. The sample and hold operators have been used to discretize the input and output of the PID controller. 
+The data from shared memory goes to the serial port and then to other system and vice versa. This process of reading data from shared memory, sending it to serial port, receiving on the other system and writing into that system's shared memory is accomplished by a C program running infinitely in the background.
 </p>
 
-<img src=\"modelica://InterProcessCommunication/Images/SharedMemory.png\" style=\"width:300px;height:150px;\">
-
-<p>
-In <b>Intersystem Communication</b> data exchange takes place as depicted in the following picture. Process is similar to IPC for OpenModelica. Then the data from shared memory goes to the serial port and then to other system and vice versa. This process of reading data from shared memory, sending it to serial port, receiving on the other system and writing into that system's shared memory is accomplished by a C program running infinitely in the background.
-</p>
-
-<img src=\"modelica://InterProcessCommunication/Images/serial.jpg\" style=\"width:300px;height:150px;\">
 
 <p>
 <b>License:</b> OSMC-PL v1.2 2017<br /><br />
-<b>Credits:</b> ModeliCon Infotech Team <br />Ankur Gajjar <br />Shubham Patne <br />Jal Panchal <br />Ritesh Sharma <br />Pavan P <br /> 
+
 </p>
 
 </html>"),

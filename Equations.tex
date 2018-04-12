@@ -1,0 +1,57 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\newcommand\inv[1]{#1\raisebox{1.15ex}{$\scriptscriptstyle-\!1$}}
+
+
+\title{Equation of Motions already included}
+\begin{document}
+\maketitle
+
+These are the equations already included the 6DOF model.
+
+\[
+C_{b/n}=
+  \begin{bmatrix}
+    cos(\theta)cos(\psi) & cos(\theta)sin(\psi) & -sin(\theta) \\
+    -cos(\phi)sin(\psi) + sin(\phi)sin(\theta)cos(\psi) & cos(\phi)cos(\psi) + sin(\phi)sin(\theta)sun(\psi) & sin(\phi)cos(\theta) \\
+    sin(\phi)sin(\psi) + cos(\phi)sin(\theta)cos(\psi) & -sin(\phi)cos(\psi) + cos(\phi)sin(\theta)sin(\psi) & cos(\phi)cos(\theta)
+  \end{bmatrix}
+\]\\
+Also represented as: $C_{b/n} = fn(\Theta)$
+\\
+\[
+\Omega=
+  \begin{bmatrix}
+    0 & -R & Q \\
+    R & 0 & -P\\
+    P & -Q & 0
+  \end{bmatrix}
+\]
+\\
+\[
+\left[ \begin{array}{c} 
+   \dot{\phi}
+\\ \dot{\theta}
+\\ \dot{\psi}
+ \end{array} \right] = \begin{bmatrix} 1 & tan(\theta)sin(\phi) & tan(\theta)cos(\phi) \\ 0 & cos(\phi) & -sin(\phi)\\
+0 &  sin(\phi)/cos(\theta) & cos(\phi)/cos(\theta)
+  \end{bmatrix} \times \left[ \begin{array}{c} P\\Q \\ R \end{array} \right]
+\\
+\]
+\\ Also represented as: $\dot{\Phi} = H(\Phi) \omega^b _{b/e}$
+\\
+\\
+${}^b\dot{v}^b_{CM/e} =(\frac{1}{m})F^b_{A,T} + C_{b/n} \times g + \Omega^b _{b/e}\times v^b_{CM/e} $
+\\ \\
+${}^e \dot{p}^n_{CM/T} = C_{n/b} \times v^b_{CM/e} $
+\\ \\
+${}^b\dot{\omega}^b_{b/e} = inv(J^b) \times [M^b_{A,T}- \Omega^b_{b/e}\times J^b \times \omega^b_{b/e}]$
+
+
+
+
+
+
+
+ \end{document}
