@@ -6,8 +6,8 @@ void setup()
 }
 void func()
 {
-  Output =  Input;  
-  //Output = 100*sin(millis()*3.1412/(20*180))+100;// This is for the case where we may not have a FG on hand.
+ Output =  Input;  
+   //Output = 100*sin(millis()*3.1412/(20*180))+100;// This is for the case where we may not have a FG on hand.
 }
 void loop()
 {

@@ -33,17 +33,17 @@ RealInput Force[3]annotation(
     Placement(visible = true, transformation(origin = {-120, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-106, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Force
 RealInput Moment[3]annotation(
     Placement(visible = true, transformation(origin = {-120, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-106, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Momentum
-RealOutput v[3](each start = 0, each fixed = true ) annotation(
-    Placement(visible = true, transformation(origin = {110, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); //Linear velocity
-RealOutput pos[3](each start = 0,each fixed = true )annotation(
-    Placement(visible = true, transformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, 34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));//Position (Displacement) //Displacement
-RealOutput omega[3](start = {1.0,0,0},each fixed = true )annotation(
-    Placement(visible = true, transformation(origin = {110, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); //Angular velocity around the CM
-RealOutput angles[3](each start = 0,each fixed = true )annotation(
-    Placement(visible = true, transformation(origin = {110, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); //Angular displacement
-
-
-parameter Real mass = 1;
+    
+Modelica.Blocks.Interfaces.RealOutput v[3](each start = 0, each fixed = true ) annotation(
+    Placement(visible = true, transformation(origin = {110, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); //Linear velocity
+Modelica.Blocks.Interfaces.RealOutput pos[3](each start = 0,each fixed = true )annotation(
+    Placement(visible = true, transformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  //Position (Displacement) //Displacement
+Modelica.Blocks.Interfaces.RealOutput omega[3](each start = 0, each fixed = true ) annotation(
+    Placement(visible = true, transformation(origin = {110, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  //Angular velocity around the CM
+Modelica.Blocks.Interfaces.RealOutput angles[3](each start = 0, each fixed = true ) annotation(
+    Placement(visible = true, transformation(origin = {110, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  //Angular displacement
+  parameter Real mass = 1;
 parameter Real g[3] = {0, 0, -9.8};
 parameter Real J[3,3] = mass*{{1, 0, 0},{0,1,0},{0,0,1}};//Moment of Inertia
 Real vdot[3];//Linear Acceleration
