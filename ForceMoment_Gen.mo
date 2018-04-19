@@ -51,8 +51,7 @@ parameter Real s;//reference area
 parameter Real cBar ;//average chord
 parameter Real b ;//span
 parameter Real Fg[3]  = {0,0, -9.8};//gravitational force
-parameter Real rho = 1.0112; //Density of air in kg/m^3
-parameter Real v = 1;//Probably needs to be guessed
+Real qBar;//Pressure
 Real CL; //Coeff of Lift
 Real CD;//Coeff of Drag
 Real CY;//Coeff of Sideslip
@@ -70,7 +69,7 @@ parameter Real CD0;//minimum drag
 parameter Real CDCL;//CL^2 term for drag polar
 
 // side force
-Real CYb "side slipe effect on side force";
+Real CYb;//side slipe effect on side force
 Real CYda;//Aileron effects on sideslip coeff
 Real CYdr;//rudder effects on sideslip coeff
 
@@ -92,7 +91,7 @@ equation
   Cl = Cldr*delta[2] + Clda*delta[1];
   Cm = Cma*alpha + Cm0 + Cmde*delta[2];
   Cn = Cndr*delta[2] + Cndr*delta[3];
-  Force = {-CD,-CY,-CL}*0.5*rho*s*cBar*v^2 + Fg + Thrust;
-  Moment = {Cl*b,Cm*cBar,Cn*b}*0.5*rho*s*cBar*v^2;
+  Force = {-CD,-CY,-CL}*0.5* qBar * s + Fg + Thrust;
+  Moment = {Cl*b,Cm*cBar,Cn*b}*qBar*s;
 end ForceMoment_Gen;
 
