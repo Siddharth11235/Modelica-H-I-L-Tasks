@@ -84,6 +84,11 @@ Real Cmde;//elevator effect on pitch
 Real Cnde;//elevator effects on yaw
 Real Cndr;//rudder effects on yaw
 
+Real angles[3](each start = 0,each fixed = true );//Angular displacments
+Real DCM[3,3] = T1(angles[1])*T2(angles[2])*T3(angles[3]);//The direction cosine matrix
+
+Real Cb_w[3,3] = inv({{cos(alpha)*cos(beta), sin(beta), sin(alpha)*cos(beta)},{-cos(alpha)*sin(beta), cos(beta), -sin(alpha)*sin(beta)},{-sin(alpha), 0, cos(alpha)}});
+
 equation
   CL = CL0 + CLa*alpha;
   CD = CD0 + CDCL*CL^2;
@@ -91,7 +96,7 @@ equation
   Cl = Cldr*delta[2] + Clda*delta[1];
   Cm = Cma*alpha + Cm0 + Cmde*delta[2];
   Cn = Cndr*delta[2] + Cndr*delta[3];
-  Force = {-CD,-CY,-CL}*0.5* qBar * s + Fg + Thrust;
+  Force = Cb_w*{{-CD,-CY,-CL}* qBar * s + DCM*Fg + Thrust};//Multiply Fg with DCM and multiply the entire w body to wind (2.3.2)
   Moment = {Cl*b,Cm*cBar,Cn*b}*qBar*s;
 end ForceMoment_Gen;
 
