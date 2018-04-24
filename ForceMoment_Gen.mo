@@ -42,16 +42,26 @@ RealInput[3] Thrust annotation(
 RealInput[3] delta annotation(
     Placement(visible = true, transformation(origin = {-110, -90}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, -90}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));//Change in eileron, rudder, and elevator angles   
 
+RealInput[3] angles annotation(
+    Placement(visible = true, transformation(origin = {-50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));//Angular Displacement
+    
+RealInput[3] vel annotation(
+    Placement(visible = true, transformation(origin = {0, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {0, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));//Velocity
+
+RealInput[3] omega annotation(
+    Placement(visible = true, transformation(origin = {50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));//Euler velocity
+
 RealOutput Force[3]annotation(
     Placement(visible = true, transformation(origin = {110, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Force
 RealOutput Moment[3]annotation(
     Placement(visible = true, transformation(origin = {110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Momentum
 
-parameter Real s;//reference area
-parameter Real cBar ;//average chord
-parameter Real b ;//span
-parameter Real Fg[3]  = {0,0, -9.8};//gravitational force
-Real qBar;//Pressure
+parameter Real m = 1043.26;
+parameter Real s = 16.1651;//reference area
+parameter Real cBar = 1.493 ;//average chord
+parameter Real b = 10.911 ;//span
+parameter Real Fg[3]  = m*{0,0, -9.8};//gravitational force
+Real qBar[3] = 0.5*1.225*{vel[1]*vel[1],vel[2]*vel[2], vel[3]*vel[3]};//Pressure
 Real CL; //Coeff of Lift
 Real CD;//Coeff of Drag
 Real CY;//Coeff of Sideslip
@@ -60,43 +70,49 @@ Real Cm;//Pitch coeff
 Real Cn;//Yaw coeff 
 
 // lift
-parameter Real CL0;
-parameter Real CLa ;//CL alpha slope
-
+parameter Real CL0 = 0.25;
+parameter Real CLa = 4.47 ;//CL alpha slope
+parameter Real CLq= 1.7;//Yawing effects on CL
+parameter Real CLde = 0.3476;//Eileron effects on CL
 
 // drag 
-parameter Real CD0;//minimum drag
-parameter Real CDCL;//CL^2 term for drag polar
+parameter Real CD0 = 0.036;//minimum drag
+parameter Real CDCL =  0.3;//CL^2 term for drag polar
 
 // side force
-Real CYb;//side slipe effect on side force
-Real CYda;//Aileron effects on sideslip coeff
-Real CYdr;//rudder effects on sideslip coeff
+parameter Real  CYb  = -0.31;//side slipe effect on side force
+parameter Real  CYda =  0;//Aileron effects on sideslip coeff
+parameter Real  CYdr = 0.21;//rudder effects on sideslip coeff
 
 // roll moment
-Real Cldr;//rudder effects on roll
-Real Clda;//Aileron effect on roll
+Real Cldr= 0.0147;//rudder effects on roll
+Real Clda =-0.09;//Aileron effect on roll
 
 // pitch moment
-Real Cm0 ;//Base value for pitch
-Real Cma ;//alpha effect on pitch, <0 for stability
-Real Cmde;//elevator effect on pitch
-Real Cnde;//elevator effects on yaw
-Real Cndr;//rudder effects on yaw
+parameter Real  Cm0 = -0.02;//Base value for pitch
+parameter Real  Cma = -1.8 ;//alpha effect on pitch, <0 for stability
+parameter Real  Cmde = -1.28;//elevator effect on pitch
 
-Real angles[3](each start = 0,each fixed = true );//Angular displacments
-Real DCM[3,3] = T1(angles[1])*T2(angles[2])*T3(angles[3]);//The direction cosine matrix
+//Yawing Moment
+parameter Real  Cnda  = -0.0053;//Aileron effects on yaw
+parameter Real  Cndr = -0.0657;//rudder effects on yaw
+parameter Real  Cnb = 0.065;//Sideslip effects on yaw
+parameter Real  Cnp = -0.03;//pitching effect on yaw
+parameter Real  Cnr = -0.99;//rolling effect on yaw
+
+
+Real  DCM[3,3] = T1(angles[1])*T2(angles[2])*T3(angles[3]);//The direction cosine matrix
 
 Real Cb_w[3,3] = inv({{cos(alpha)*cos(beta), sin(beta), sin(alpha)*cos(beta)},{-cos(alpha)*sin(beta), cos(beta), -sin(alpha)*sin(beta)},{-sin(alpha), 0, cos(alpha)}});
 
 equation
-  CL = CL0 + CLa*alpha;
+  CL = CL0 + CLa*alpha + CLq*omega[2] + CLde*delta[1];
   CD = CD0 + CDCL*CL^2;
   CY = CYb*beta + CYda*delta[1] + CYdr*delta[2] ;
   Cl = Cldr*delta[2] + Clda*delta[1];
   Cm = Cma*alpha + Cm0 + Cmde*delta[2];
-  Cn = Cndr*delta[2] + Cndr*delta[3];
-  Force = Cb_w*{{-CD,-CY,-CL}* qBar * s + DCM*Fg + Thrust};//Multiply Fg with DCM and multiply the entire w body to wind (2.3.2)
-  Moment = {Cl*b,Cm*cBar,Cn*b}*qBar*s;
+  Cn = Cnda*delta[2] + Cndr*delta[3] + Cnb*beta + Cnp*omega[1] + Cnr*omega[3];
+  Force = Cb_w*({-CD,-CY,-CL}.*qBar*s + DCM*Fg + Thrust);//Multiply Fg with DCM and multiply the entire w body to wind (2.3.2)
+  Moment = {Cl*b,Cm*cBar,Cn*b}.*qBar*s;
 end ForceMoment_Gen;
 
