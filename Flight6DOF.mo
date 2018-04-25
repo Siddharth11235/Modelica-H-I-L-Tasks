@@ -52,6 +52,8 @@ Real OMEGA[3,3] = skew(omega);//Skew symmetric matrix form of the angular veloci
 Real DCM[3,3] = T1(angles[1])*T2(angles[2])*T3(angles[3]);//The direction cosine matrix
 Real Rotation_mat[3,3] = {{1, tan(angles[2])*sin(angles[1]), tan(angles[2])*cos(angles[1])}, {0, cos(angles[1]), -sin(angles[1])},{0, sin(angles[1])/cos(angles[2]) , cos(angles[1])/cos(angles[2])}};
 Real euler_rates[3];
+
+
 equation
   vdot = 1 / mass * Force + DCM * g + OMEGA * v;
   der(v) = vdot;
