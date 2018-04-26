@@ -1,7 +1,7 @@
 block ForceMoment_Gen
 
 import Modelica.Math.Matrices.*;
-import SI=Modelica.SIunits;
+import Modelica.SIunits.*;
 import Modelica.Blocks.Interfaces.*;
 import Modelica.Math.Vectors.*;
 
@@ -67,8 +67,8 @@ Real Cm;//Pitch coeff
 Real Cn;//Yaw coeff 
 
 //Angles of attack and sideslip
-Real alpha;
-Real beta;
+Angle alpha(start = 0.0549);
+Angle beta(start = 0.0);
 
 // lift
 parameter Real CL0 = 0.25;
