@@ -48,10 +48,7 @@ RealInput[3] vel annotation(
 RealInput[3] omega annotation(
     Placement(visible = true, transformation(origin = {50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));//Euler velocity
 
-RealOutput Force[3]annotation(
-    Placement(visible = true, transformation(origin = {110, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Force
-RealOutput Moment[3]annotation(
-    Placement(visible = true, transformation(origin = {110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Momentum
+
 
 parameter Real m = 1043.26;
 parameter Real s = 16.1651;//reference area
@@ -106,6 +103,13 @@ Real Cb_w[3,3] = inv({{cos(alpha)*cos(beta), sin(beta), sin(alpha)*cos(beta)},{-
 
 Real vw[3] = {0,0,0};
 Real vrel[3] = vel - vw;
+
+
+RealOutput Force[3] (start = {1043.26 * 9.8 / 8, 0, 1043.26 * 9.8})annotation(
+    Placement(visible = true, transformation(origin = {110, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Force
+RealOutput Moment[3] (start = {0,0,0})annotation(
+    Placement(visible = true, transformation(origin = {110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Momentum
+    
 equation
   alpha= atan(vrel[1]/vel[1]);
   beta  = asin(vrel[2]/norm(vrel));

@@ -1,9 +1,9 @@
 model TestFm
   Real del[3] = {1,0,0};
   Real Thrust[3] = {3000 , 0, 0};
-  ForceMoment_Gen forceMoment_Gen1(alpha(fixed = false, start = 0.127154))  annotation(
+  ForceMoment_Gen forceMoment_Gen1(Force(start = {1043.26 * 9.8 / 8, 0, 1043.26 * 9.8}), alpha(fixed = false, start = 0.0548732))  annotation(
     Placement(visible = true, transformation(origin = {-62, -12}, extent = {{-26, -26}, {26, 26}}, rotation = 0)));
-  Flight6DOF flight6DOF1(J = {{1285.31, 0, 0}, {0, 1824.93, 0}, {0, 0, 2666.893}}, angles(start = {0, 0, 0}), mass = 1043.26, omega(start = {0, 0, 0}), pos(start = {0, 0, 1000}), v(start = {35.48, 0, 4.5}))  annotation(
+  Flight6DOF flight6DOF1(J = {{1285.31, 0, 0}, {0, 1824.93, 0}, {0, 0, 2666.893}}, angles(start = {0, 0, 0}), mass = 1043.26, omega(start = {0, 0, 0}), pos(start = {0, 0, 1000}), v(start = {45.3127, 0, 2.488}))  annotation(
     Placement(visible = true, transformation(origin = {26, -12}, extent = {{-26, -26}, {26, 26}}, rotation = 0))); 
     
      equation

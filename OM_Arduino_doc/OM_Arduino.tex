@@ -36,6 +36,12 @@ The model that will be uploaded looks as given below:
 \includegraphics[scale=0.25]{Model.png}
 \end{center}
 
+The model consists of an embedded block with pre-defined parameters for the ATmega328P microcontroller. It can be modified to suit any ATMel controller, provided the user knows its characteristics. This block is unconnected to any other in the model.
+\\
+\\
+Now we look at the blocks that specify the task to be done. The boolean expression blocks have fairly simple utility here. They are just modifying their state based on the time. The Digital Write Boolean pins communicate the state of the Boolean expression blocks to the pins specified, which are in turn connected to the shield and allow for the LED light colour to change.
+\\
+\\
 Next, we create a .mos file for the problem at hand. As we mentioned before, we can't directly flash the model to the arduino, so we will be doing it via the terminal. The first step involves creating a .mos file that will load the relevant files in memory and then translate the model into a C file. A generic .mos script is shown below
 \begin{lstlisting}
 loadModel(Modelica);
@@ -61,10 +67,14 @@ After the file is created, execute the following steps. Since the example we are
 
 \end{itemize}
 
-On doing so, the LED on the shield will light up, first with a bluish colour and then with a red colour as shown in the image below. 
+On doing so, the LED on the shield will light up, first with a bluish colour and then with a red colour as shown in the images below. 
 
 
-
-
+\begin{center}
+\includegraphics[scale=0.1]{IMG_20180427_131831.jpg}
 \includegraphics[scale=0.1]{Shield_With_Code.jpg}
+\end{center}
+
+
 \end{document}
+
