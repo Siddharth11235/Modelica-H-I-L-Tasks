@@ -39,6 +39,8 @@ RealInput[3] Thrust annotation(
 RealInput[3] delta annotation(
     Placement(visible = true, transformation(origin = {-110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));//Change in eileron, rudder, and elevator angles   
 
+
+
 RealInput[3] angles annotation(
     Placement(visible = true, transformation(origin = {-50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));//Angular Displacement
     
@@ -49,7 +51,11 @@ RealInput[3] omega annotation(
     Placement(visible = true, transformation(origin = {50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));//Euler velocity
 
 
-
+RealInput alpha annotation(
+    Placement(visible = true, transformation(origin = {-110, -70}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, -70}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));//Thrust force
+    
+    
+    
 parameter Real m = 1043.26;
 parameter Real s = 16.1651;//reference area
 parameter Real cBar = 1.493 ;//average chord
@@ -63,8 +69,7 @@ Real Cl;//Roll coeff
 Real Cm;//Pitch coeff
 Real Cn;//Yaw coeff 
 
-//Angles of attack and sideslip
-Angle alpha(start = 0.0549);
+//Angle of sideslip
 Angle beta(start = 0.0);
 
 // lift
@@ -111,7 +116,7 @@ RealOutput Moment[3] (start = {0,0,0})annotation(
     Placement(visible = true, transformation(origin = {110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Momentum
     
 equation
-  alpha= atan(vrel[1]/vel[1]);
+ // alpha= atan(vrel[1]/vel[1]);
   beta  = asin(vrel[2]/norm(vrel));
   CL = CL0 + CLa*alpha + CLq*omega[2];
   CD = CD0 + CDCL*CL^2;

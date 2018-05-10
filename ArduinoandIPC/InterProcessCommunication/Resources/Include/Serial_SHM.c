@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
 	char S_Port[32]="";
     int S_Baud = atoi(argv[1]);;
-    //printf("Serial Port (e.g. /dev/ttyUSB0) : ");
+    //  printf("Serial Port (e.g. /dev/ttyUSB0) : ");
     scanf("%s", S_Port);    
     //printf("Baud Rate (e.g. 115200) : ");
     
