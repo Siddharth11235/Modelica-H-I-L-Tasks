@@ -61,7 +61,6 @@ parameter Real s = 16.1651;//reference area
 parameter Real cBar = 1.493 ;//average chord
 parameter Real b = 10.911 ;//span
 parameter Real W[3]  = m*{0,0, -9.8};//gravitational force
-Real qBar[3] = 0.5*1.225*{vel[1]*vel[1],vel[2]*vel[2], vel[3]*vel[3]};//Pressure
 Real CL; //Coeff of Lift
 Real CD;//Coeff of Drag
 Real CY;//Coeff of Sideslip
@@ -76,7 +75,7 @@ Angle beta(start = 0.0);
 parameter Real CL0 = 0.25;
 parameter Real CLa = 4.47 ;//CL alpha slope
 parameter Real CLq  = 1.7;
-
+parameter Real CLde = 0.3476;
 
 // drag 
 parameter Real CD0 = 0.036;//minimum drag
@@ -104,10 +103,11 @@ Real Cnp = -0.03;//pitching effect on yaw
 Real Cnr = -0.99;//rolling effect on yaw
 Real DCM[3,3] = T1(angles[1])*T2(angles[2])*T3(angles[3]);//The direction cosine matrix
 
-Real Cb_w[3,3] = inv({{cos(alpha)*cos(beta), sin(beta), sin(alpha)*cos(beta)},{-cos(alpha)*sin(beta), cos(beta), -sin(alpha)*sin(beta)},{-sin(alpha), 0, cos(alpha)}});
+Real Cw_b[3,3] = {{cos(alpha)*cos(beta), sin(beta), sin(alpha)*cos(beta)},{-cos(alpha)*sin(beta), cos(beta), -sin(alpha)*sin(beta)},{-sin(alpha), 0, cos(alpha)}};
 
 Real vw[3] = {0,0,0};
 Real vrel[3] = vel - vw;
+Real qBar = 0.5*1.225*(norm(vrel))^2;//Pressure
 
 
 RealOutput Force[3] (start = {1043.26 * 9.8 / 8, 0, 1043.26 * 9.8})annotation(
@@ -118,13 +118,13 @@ RealOutput Moment[3] (start = {0,0,0})annotation(
 equation
  // alpha= atan(vrel[1]/vel[1]);
   beta  = asin(vrel[2]/norm(vrel));
-  CL = CL0 + CLa*alpha + CLq*omega[2];
+  CL = CL0 + CLa*alpha + CLq*omega[2]*cBar/(2*norm(vrel)) + CLde*delta[2];
   CD = CD0 + CDCL*CL^2;
-  CY = CYb*beta + CYda*delta[1] + CYdr*delta[2] ;
-  Cl = Cldr*delta[2] + Clda*delta[1];
+  CY = CYb*beta + CYda*delta[1] + CYdr*delta[3] ;
+  Cl = Cldr*delta[3] + Clda*delta[1];
   Cm = Cma*alpha + Cm0 + Cmde*delta[2];
-  Cn = Cndr*delta[2] + Cndr*delta[3] + Cnb*beta + Cnp*omega[1] + Cnr*omega[3];
-  Force = Cb_w*({-CD,-CY,-CL}.*qBar*s + DCM*W + Thrust);//Multiply Fg with DCM and multiply the entire w body to wind (2.3.2)
-  Moment = {Cl*b,Cm*cBar,Cn*b}.*qBar*s;
+  Cn = Cndr*delta[3] + Cndr*delta[3] + Cnb*beta + Cnp*omega[1] + Cnr*omega[3];
+  Force = Cw_b*({-CD,-CY,-CL}*qBar*s) + DCM*W + Thrust;//Multiply Fg with DCM and multiply the entire w body to wind (2.3.2)
+  Moment = {Cl*b,Cm*cBar,Cn*b}*qBar*s;
 end ForceMoment_Gen;
 

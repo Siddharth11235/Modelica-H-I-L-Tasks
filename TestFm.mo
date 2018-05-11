@@ -1,10 +1,10 @@
 model TestFm
-  Real del[3] = {0.0577164,0,0};
-  Real Thrust[3] = {-1786.65 , 0, 0};
-  Real alpha = -0.0521539;
-  ForceMoment_Gen forceMoment_Gen1(Force(start = {1043.26 * 9.8 / 8, 0, 1043.26 * 9.8}), alpha(displayUnit = "rad",fixed = true, start = -0.027113))  annotation(
+  Real del[3] = {0,-0.0156543,0};
+  Real Thrust[3] = {2257.12 , 0, 0};
+  Real alpha = 2.08534e-5;
+  ForceMoment_Gen forceMoment_Gen1(Force(start = {0, 0, 0}), W = 1043.26 * {0, 0, 9.8}, alpha(displayUnit = "rad",fixed = true, start = -0.027113))  annotation(
     Placement(visible = true, transformation(origin = {-62, -12}, extent = {{-26, -26}, {26, 26}}, rotation = 0)));
-  Flight6DOF flight6DOF1(J = {{1285.31, 0, 0}, {0, 1824.93, 0}, {0, 0, 2666.893}}, angles(start = {0, 0, 0}), mass = 1043.26, omega(start = {0, 0, 0}), pos(start = {0, 0, 1000}), v(start = {60, 0, 0}))  annotation(
+  Flight6DOF flight6DOF1(J = {{1285.31, 0, 0}, {0, 1824.93, 0}, {0, 0, 2666.893}}, angles(start = {0, 0, 0}), g = {0, 0, 9.8}, mass = 1043.26, omega(start = {0, 0, 0}), pos(start = {0, 0, -1000}), v(start = {65, 0, 0}))  annotation(
     Placement(visible = true, transformation(origin = {26, -12}, extent = {{-26, -26}, {26, 26}}, rotation = 0))); 
     
      equation
