@@ -36,6 +36,6 @@ CL = CL0 + CLa*alpha +  CLde*de;
 CD = CD0 + CDCL*CL^2;
 //(0.5*rho*V^2)*s*(CD*cos(alpha) + CL*sin(alpha)) - (m*g)*sin(alpha) + thrust*sin(alpha) = 0;
 //(0.5*rho*V^2)*s*(CD*sin(alpha) + CL*cos(alpha)) -thrust (m*g)*sin(alpha) = 0;
-(0.5*rho*V^2)*s*CL -m*g + thrust*sin(alpha) = 0;
-thrust*cos(alpha) - (0.5*rho*V^2)*s* CD = 0;
+(0.5*rho*V^2)*s*CL -m*g = 0;
+thrust*cos(alpha) - (0.5*rho*V^2)*s*CD = 0;
 end val_gen;

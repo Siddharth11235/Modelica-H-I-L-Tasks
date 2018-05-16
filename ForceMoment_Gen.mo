@@ -50,9 +50,6 @@ RealInput[3] vel annotation(
 RealInput[3] omega annotation(
     Placement(visible = true, transformation(origin = {50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {50, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));//Euler velocity
 
-
-RealInput alpha annotation(
-    Placement(visible = true, transformation(origin = {-110, -70}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, -70}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));//Thrust force
     
     
     
@@ -71,6 +68,7 @@ Real Cn;//Yaw coeff
 //Angle of sideslip
 Angle beta(start = 0.0);
 
+parameter Real alpha = 2.1136e-5;
 // lift
 parameter Real CL0 = 0.25;
 parameter Real CLa = 4.47 ;//CL alpha slope
@@ -82,25 +80,25 @@ parameter Real CD0 = 0.036;//minimum drag
 parameter Real CDCL =  0.3;//CL^2 term for drag polar
 
 // side force
-Real CYb  = -0.31;//side slipe effect on side force
-Real CYda =  0;//Aileron effects on sideslip coeff
-Real CYdr = 0.21;//rudder effects on sideslip coeff
+parameter Real CYb  = -0.31;//side slipe effect on side force
+parameter Real CYda =  0;//Aileron effects on sideslip coeff
+parameter Real CYdr = 0.21;//rudder effects on sideslip coeff
 
 // roll moment
-Real Cldr= 0.0147;//rudder effects on roll
-Real Clda =-0.09;//Aileron effect on roll
+parameter Real Cldr= 0.0147;//rudder effects on roll
+parameter Real Clda =-0.09;//Aileron effect on roll
 
 // pitch moment
-Real Cm0 = -0.02;//Base value for pitch
-Real Cma = -1.8 ;//alpha effect on pitch, <0 for stability
-Real Cmde = -1.28;//elevator effect on pitch
+parameter Real Cm0 = -0.02;//Base value for pitch
+parameter Real Cma = -1.8 ;//alpha effect on pitch, <0 for stability
+parameter Real Cmde = -1.28;//elevator effect on pitch
 
 //Yawing Moment
-Real Cnda  = -0.0053;//Aileron effects on yaw
-Real Cndr = -0.0657;//rudder effects on yaw
-Real Cnb = 0.065;//Sideslip effects on yaw
-Real Cnp = -0.03;//pitching effect on yaw
-Real Cnr = -0.99;//rolling effect on yaw
+parameter Real Cnda  = -0.0053;//Aileron effects on yaw
+parameter Real Cndr = -0.0657;//rudder effects on yaw
+parameter Real Cnb = 0.065;//Sideslip effects on yaw
+parameter Real Cnp = -0.03;//pitching effect on yaw
+parameter Real Cnr = -0.99;//rolling effect on yaw
 Real DCM[3,3] = T1(angles[1])*T2(angles[2])*T3(angles[3]);//The direction cosine matrix
 
 Real Cw_b[3,3] = {{cos(alpha)*cos(beta), sin(beta), sin(alpha)*cos(beta)},{-cos(alpha)*sin(beta), cos(beta), -sin(alpha)*sin(beta)},{-sin(alpha), 0, cos(alpha)}};
@@ -110,13 +108,13 @@ Real vrel[3] = vel - vw;
 Real qBar = 0.5*1.225*(norm(vrel))^2;//Pressure
 
 
-RealOutput Force[3] (start = {1043.26 * 9.8 / 8, 0, 1043.26 * 9.8})annotation(
+RealOutput Force[3] (start = {0,0,0})annotation(
     Placement(visible = true, transformation(origin = {110, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Force
 RealOutput Moment[3] (start = {0,0,0})annotation(
     Placement(visible = true, transformation(origin = {110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Momentum
     
 equation
- // alpha= atan(vrel[1]/vel[1]);
+  //alpha= atan2(vrel[3],vel[1]);
   beta  = asin(vrel[2]/norm(vrel));
   CL = CL0 + CLa*alpha + CLq*omega[2]*cBar/(2*norm(vrel)) + CLde*delta[2];
   CD = CD0 + CDCL*CL^2;
