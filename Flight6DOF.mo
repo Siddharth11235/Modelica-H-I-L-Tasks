@@ -44,7 +44,7 @@ Modelica.Blocks.Interfaces.RealOutput omega[3](each start = 0, each fixed = true
 Modelica.Blocks.Interfaces.RealOutput angles[3](each start = 0, each fixed = true ) annotation(
     Placement(visible = true, transformation(origin = {110, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  //Angular displacement
   parameter Real mass = 1;
-parameter Real g[3] = {0, 0, -9.8};
+parameter Real g[3] = {0, 0, 9.8};
 parameter Real J[3,3] = mass*{{1, 0, 0},{0,1,0},{0,0,1}};//Moment of Inertia
 Real vdot[3];//Linear Acceleration
 Real omegadot[3];//Angular acceleration

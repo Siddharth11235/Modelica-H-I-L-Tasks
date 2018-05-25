@@ -2,40 +2,64 @@ model val_gen
 
 import Modelica.SIunits.*;
 
-parameter Real CL0 = 0.25;
-parameter Real CLa = 4.47 ;//CL alpha slope
-parameter Real CLq  = 1.7;
+// lift
 
-
-// drag 
-parameter Real CD0 = 0.036;//minimum drag
-parameter Real CDCL =  0.3;//CL^2 term for drag polar
-
-// pitch moment
-parameter Real Cm0 = -0.02;//Base value for pitch
-parameter Real Cma = -1.8 ;//alpha effect on pitch, <0 for stability
-parameter Real Cmde = -1.28;//elevator effect on pitch
+  parameter DimensionlessRatio CL0 = 0.25 "CL0";
+  parameter Real CLalpha(unit = "/rad") = 4.7 "CLalpha";
+  parameter Real CLq(unit = "/rad/s") = 1.7 "CLq";
+  parameter Real CLdeltae(unit = "/rad") = 0.3476 "CLdelta_e";
+  
+  parameter DimensionlessRatio CD0 = 0.036 "CD0";
+  parameter Real CDbeta(unit = "/rad") = 0.17 "CDbeta";
+  parameter Real CDdeltae(unit = "/rad") = 0.06 "CDdelta_e";
+  
+  parameter Real CYb (unit = "/rad") = -0.31 "CYbeta";
+  parameter Real CYp(unit = "/rad/s") = -0.037 "CYp";
+  parameter Real CYr(unit = "/rad/s") = 0.21 "CYr";
+  parameter Real CYda(unit = "/rad") = 0.0 "CYdelta_a";
+  
+  parameter Real Clbeta(unit = "/rad") = -0.089 "Clbeta";
+  parameter Real Clp(unit = "/rad/s") = -0.47 "Clp";
+  parameter Real Clr(unit = "/rad/s") = 0.096 "Clr";
+  parameter Real Cldeltaa(unit = "/rad") = -0.09 "Cldalta_a";
+  parameter Real Cldeltar(unit = "/rad") = 0.0147 "Cldelta_r";
+  
+  parameter DimensionlessRatio Cm0 = -0.02 "Cm0";
+  parameter Real Cmalpha(unit = "/rad") = -1.8 "Cm_alpha";
+  parameter Real Cmalphadot(unit = "/rad/sec") = -12.4 "Cm_alphadot";
+  parameter Real Cmdeltae(unit = "/rad") = -1.28 "Cmdelta_e";
+  
+  parameter Real Cnbeta(unit = "/rad") = 0.065 "Cn_beta";
+  parameter Real Cnp(unit = "/rad/s") = -0.03 "Cnp";
+  parameter Real Cnr(unit = "/rad/s") = -0.99 "Cnr";
+  parameter Real Cndeltaa(unit = "/rad") = -0.0053 "Cndelta_a";
+  parameter Real Cndeltar(unit = "/rad") = -0.0657 "Cndelta_r";
+  
 
 parameter Real m = 1043.26;
 parameter Real g = 9.81;
 parameter Real rho = 1.225;
-parameter Real V = 65;
-parameter Real cBar = 1.493 ;//average chord
+parameter Real V = 60;
+parameter Real cbar = 1.493 ;//average chord
 parameter Real s = 16.1651;//reference area
+
+parameter Real[3] omega = {0,0.0,0};
+
 
 Real CL;
 Real CD;
 Real alpha;
 Real de;
 Real thrust;
-parameter Real CLde = 0.3476;
 
 equation
-Cm0 + Cma*alpha + Cmde* de = 0;
-CL = CL0 + CLa*alpha +  CLde*de;
-CD = CD0 + CDCL*CL^2;
-//(0.5*rho*V^2)*s*(CD*cos(alpha) + CL*sin(alpha)) - (m*g)*sin(alpha) + thrust*sin(alpha) = 0;
-//(0.5*rho*V^2)*s*(CD*sin(alpha) + CL*cos(alpha)) -thrust (m*g)*sin(alpha) = 0;
-(0.5*rho*V^2)*s*CL -m*g = 0;
-thrust*cos(alpha) - (0.5*rho*V^2)*s*CD = 0;
+Cm0 + Cmalpha*alpha + Cmdeltae* de = 0;
+CL = CL0 + CLalpha * alpha + CLq * (omega[2] * cbar) / (2 *V) + CLdeltae * de;
+CD = CD0 + 0.0830304 * CL * CL;
+  
+  
+(0.5*rho*V^2)*s*(CD*cos(alpha) + CL*sin(alpha)) = (m*g)*sin(alpha)+ thrust*cos(alpha);
+(0.5*rho*V^2)*s*(CD*sin(alpha) + CL*cos(alpha)) -thrust*sin(alpha) -(m*g)*cos(alpha) = 0;
+//(0.5*rho*V^2)*s*CL -m*g = 0;
+//thrust*cos(alpha) - (0.5*rho*V^2)*s*CD = 0;
 end val_gen;
