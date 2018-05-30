@@ -80,6 +80,8 @@ Real alpha;//-0.122882;
   parameter Real CDbeta(unit = "/rad") = 0.17 "CDbeta";
   parameter Real CDdeltae(unit = "/rad") = 0.06 "CDdelta_e";
   
+  parameter Real k =  0.0830304;
+  
   parameter Real CYb (unit = "/rad") = -0.31 "CYbeta";
   parameter Real CYp(unit = "/rad/s") = -0.037 "CYp";
   parameter Real CYr(unit = "/rad/s") = 0.21 "CYr";
@@ -93,7 +95,7 @@ Real alpha;//-0.122882;
   
   parameter DimensionlessRatio Cm0 = -0.02 "Cm0";
   parameter Real Cmalpha(unit = "/rad") = -1.8 "Cm_alpha";
-  parameter Real Cmalphadot(unit = "/rad/sec") = -12.4 "Cm_alphadot";
+  parameter Real Cmq(unit = "/rad/sec") = -12.4 "Cm_alphadot";
   parameter Real Cmdeltae(unit = "/rad") = -1.28 "Cmdelta_e";
   
   parameter Real Cnbeta(unit = "/rad") = 0.065 "Cn_beta";
@@ -102,7 +104,6 @@ Real alpha;//-0.122882;
   parameter Real Cndeltaa(unit = "/rad") = -0.0053 "Cndelta_a";
   parameter Real Cndeltar(unit = "/rad") = -0.0657 "Cndelta_r";
   
-  parameter Real alphadot = 0.0;
   
 Real DCM[3,3] = T1(angles[1])*T2(angles[2])*T3(angles[3]);//The direction cosine matrix
 
@@ -111,6 +112,11 @@ Real Cw_b[3,3] = {{cos(alpha)*cos(beta), sin(beta), sin(alpha)*cos(beta)},{-cos(
 Real vw[3] = {0,0,0};
 Real vrel[3] = vel - vw;
 Real qBar = 0.5*1.225*(norm(vrel))^2;//Pressure
+
+Real L;
+Real D;
+Real Y;
+
 
 
 RealOutput Force[3] (start = {0,0,0})annotation(Placement(visible = true, transformation(origin = {110, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, 50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Force
@@ -125,9 +131,16 @@ equation
 // + CDbeta * beta + CDdeltae * Elevator;
   CY = CYb * beta + CYp * (omega[1] * b) / (2 * norm(vrel)) + CYr * (omega[3] * b) / (2 * norm(vrel)) + CYda * delta[1];
   Cl = Clbeta * beta + Clp * (omega[1] * b) / (2 * norm(vrel)) + Clr * (omega[3] * b) / (2 * norm(vrel)) + Cldeltaa * delta[1] + Cldeltaa * delta[3];
-  Cm = Cm0 + Cmalpha * alpha + Cmalphadot * (alphadot * cbar) / (2 * norm(vrel)) + Cmdeltae * delta[2];
+  Cm =Cm0+Cmalpha*alpha+((Cmq*omega[2]*cbar)/(2*norm(vrel)))+Cmdeltae*delta[2] ;
   Cn = Cnbeta * beta + Cnp * (omega[1] * b) / (2 * norm(vrel)) + Cnr * (omega[3] * b) / (2 * norm(vrel)) + Cndeltaa * delta[1] + Cndeltaa * delta[3];
-  Force = Cw_b*({-CD,-CY,-CL}*qBar*s );//Multiply Fg with DCM and multiply the entire w body to wind (2.3.2)
-  Moment = {Cl*b,Cm*cbar,Cn*b}*qBar*s;
+  {D,Y,L} = Cw_b*({-CD,-CY,-CL}*qBar*s );//Multiply Fg with DCM and multiply the entire w body to wind (2.3.2)
+
+Force[1]= -D*cos(alpha)+L*sin(alpha)-W[3]*sin(angles[2])+Thrust[1];
+Force[2] = Y;
+Force[3]= -D*sin(alpha)-L*cos(alpha)+W[3]*cos(angles[2]);
+
+  
+  
+ Moment = {Cl*b,Cm*cbar,Cn*b}*qBar*s;
 end ForceMoment_Gen;
 

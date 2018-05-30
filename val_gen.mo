@@ -26,7 +26,7 @@ import Modelica.SIunits.*;
   
   parameter DimensionlessRatio Cm0 = -0.02 "Cm0";
   parameter Real Cmalpha(unit = "/rad") = -1.8 "Cm_alpha";
-  parameter Real Cmalphadot(unit = "/rad/sec") = -12.4 "Cm_alphadot";
+  parameter Real Cmq(unit = "/rad/sec") = -12.4 "Cm_q";
   parameter Real Cmdeltae(unit = "/rad") = -1.28 "Cmdelta_e";
   
   parameter Real Cnbeta(unit = "/rad") = 0.065 "Cn_beta";
@@ -44,7 +44,7 @@ parameter Real cbar = 1.493 ;//average chord
 parameter Real s = 16.1651;//reference area
 
 parameter Real[3] omega = {0,0.0,0};
-
+parameter Real theta = 0;
 
 Real CL;
 Real CD;
@@ -52,14 +52,31 @@ Real alpha;
 Real de;
 Real thrust;
 
+
+Real q;
+Real L;
+Real D;
+
+
 equation
-Cm0 + Cmalpha*alpha + Cmdeltae* de = 0;
-CL = CL0 + CLalpha * alpha + CLq * (omega[2] * cbar) / (2 *V) + CLdeltae * de;
-CD = CD0 + 0.0830304 * CL * CL;
-  
-  
-(0.5*rho*V^2)*s*(CD*cos(alpha) + CL*sin(alpha)) = (m*g)*sin(alpha)+ thrust*cos(alpha);
-(0.5*rho*V^2)*s*(CD*sin(alpha) + CL*cos(alpha)) -thrust*sin(alpha) -(m*g)*cos(alpha) = 0;
+
+q=0.5*rho*V^2;
+
+CL = CL0+CLalpha*alpha+((CLq*omega[2]*cbar)/(2*V))+CLdeltae*de;
+0  = Cm0+Cmalpha*alpha+((Cmq*omega[2]*cbar)/(2*V))+Cmdeltae*de ;
+CD = CD0+0.0830304*CL^2;
+
+// forces and moments
+
+L = CL*s*q;
+D = CD*s*q;
+
+
+
+0 = -D*cos(alpha)+L*sin(alpha)-m*g*sin(theta)+thrust;
+0 = -D*sin(alpha)-L*cos(alpha)+m*g*cos(theta);
+
+
 //(0.5*rho*V^2)*s*CL -m*g = 0;
 //thrust*cos(alpha) - (0.5*rho*V^2)*s*CD = 0;
 end val_gen;
