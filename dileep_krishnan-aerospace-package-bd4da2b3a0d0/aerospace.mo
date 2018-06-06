@@ -74,8 +74,8 @@ package aerospace
       Modelica.Blocks.Interfaces.RealOutput omega_b[3](each final quantity = "AngularVelocity", final unit = "rad/s") annotation(
         Placement(visible = true, transformation(origin = {110, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       /*Modelica.Blocks.Interfaces.RealInput EulerAngles[3](each final quantity = "Angle", final unit = "rad") annotation(
-                                                                                                                                                                                                                                            Placement(visible = true, transformation(origin = {-120, 1.9984e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-108, 2.22045e-15}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
-                                                                                                                                                                                                                                        */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          Placement(visible = true, transformation(origin = {-120, 1.9984e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-108, 2.22045e-15}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
     protected
       /* Declaratoin of individual variables for integration */
       SI.Velocity ub(start = 0) "Velocity in x-axis in body frame";
@@ -862,19 +862,19 @@ package aerospace
       aerospace.Components.SixDOFEoM sixDOFEoM1(Euler_init = {0.0, 0.011191045110034, 0.0}, I = {{1285.31, 0.0, 0.0}, {0.0, 1824.93, 0.0}, {0.0, 0.0, 2666.893}}, m = 1043.26, omega_init = {0.0, 0.0, 0.0}, vb_init = {60.0, 0.0, 0.0}, xe_init = {0.0, 0.0, -100}) annotation(
         Placement(visible = true, transformation(origin = {20, 58}, extent = {{-26, -26}, {26, 26}}, rotation = 0)));
       aerospace.Components.AerodynamicForcesandMoments aerodynamicForcesandMoments1 annotation(
-        Placement(visible = true, transformation(origin = {-58, 16}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
+        Placement(visible = true, transformation(origin = {-64, 18}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
       aerospace.Components.IncidenceSideslipandAirspeed incidenceSideslipandAirspeed1 annotation(
-        Placement(visible = true, transformation(origin = {89, 9}, extent = {{9, -9}, {-9, 9}}, rotation = 90)));
+        Placement(visible = true, transformation(origin = {87, 9}, extent = {{9, -9}, {-9, 9}}, rotation = 90)));
       aerospace.Components.DynamicPressure dynamicPressure1 annotation(
-        Placement(visible = true, transformation(origin = {30, -2}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Placement(visible = true, transformation(origin = {18, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
       aerospace.Components.AerodynamicCoefficients aerodynamicCoefficients1 annotation(
-        Placement(visible = true, transformation(origin = {69, -39}, extent = {{21, -21}, {-21, 21}}, rotation = 0)));
+        Placement(visible = true, transformation(origin = {-51, -43}, extent = {{-17, -17}, {17, 17}}, rotation = 0)));
       Modelica.Blocks.Sources.Constant AirDensity(k = 1.225) annotation(
-        Placement(visible = true, transformation(origin = {53, 15}, extent = {{-5, -5}, {5, 5}}, rotation = -90)));
+        Placement(visible = true, transformation(origin = {59, 7}, extent = {{-5, -5}, {5, 5}}, rotation = -90)));
       aerospace.Components.ForceInBodyAxis forceInBodyAxis1 annotation(
-        Placement(visible = true, transformation(origin = {-83, 53}, extent = {{9, -9}, {-9, 9}}, rotation = -90)));
+        Placement(visible = true, transformation(origin = {-69, 77}, extent = {{9, -9}, {-9, 9}}, rotation = -90)));
       aerospace.Components.Mux6 mux61 annotation(
-        Placement(visible = true, transformation(origin = {-23, -39}, extent = {{21, -21}, {-21, 21}}, rotation = 0)));
+        Placement(visible = true, transformation(origin = {-1, -43}, extent = {{-17, -17}, {17, 17}}, rotation = 0)));
       Modelica.Blocks.Interfaces.RealInput Thrust(final quantity = "Force", final unit = "N") annotation(
         Placement(visible = true, transformation(origin = {-116, 70}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-103, 59}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
       Modelica.Blocks.Interfaces.RealInput Elevator(quantity = "Angle", final unit = "rad") annotation(
@@ -892,79 +892,109 @@ package aerospace
       Modelica.Blocks.Interfaces.RealOutput DCMbe[3, 3](each unit = "1") annotation(
         Placement(visible = true, transformation(origin = {110, -18}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       /*aerospace.Components.fmstimestamp fmstimestamp1 annotation(
-                                                                                                                                                                                                          Placement(visible = true, transformation(origin = {34, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-                                                                                                                                                                                                        Modelica.Blocks.Sources.Clock fmsclock(offset = 0, startTime = 0) annotation(
-                                                                                                                                                                                                          Placement(visible = true, transformation(origin = {-58, -76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-                                                                                                                                                                                                        Modelica.Blocks.Interfaces.RealOutput fmsclkout annotation(
-                                                                                                                                                                                                          Placement(visible = true, transformation(origin = {104, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, -36}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-                                                                                                                                                                                                        Modelica.Blocks.Interfaces.BooleanOutput fmsclksqwave annotation(
-                                                                                                                                                                                                          Placement(visible = true, transformation(origin = {104, -88}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, -82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-                                                                                                                                                                                                        Boolean clkoutpulse(start = false);*/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Placement(visible = true, transformation(origin = {34, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Modelica.Blocks.Sources.Clock fmsclock(offset = 0, startTime = 0) annotation(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Placement(visible = true, transformation(origin = {-58, -76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Modelica.Blocks.Interfaces.RealOutput fmsclkout annotation(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Placement(visible = true, transformation(origin = {104, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, -36}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Modelica.Blocks.Interfaces.BooleanOutput fmsclksqwave annotation(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Placement(visible = true, transformation(origin = {104, -88}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, -82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Boolean clkoutpulse(start = false);*/
       Modelica.Blocks.Interfaces.RealOutput Xe[3] annotation(
-        Placement(visible = true, transformation(origin = {132, 64}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, 64}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Placement(visible = true, transformation(origin = {130, 64}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, 64}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
+      connect(aerodynamicForcesandMoments1.Moments, sixDOFEoM1.Moments) annotation(
+        Line(points = {{-69, 28}, {-69, 44}, {-8, 44}, {-8, 46}}, color = {0, 0, 127}, thickness = 0.5));
+      connect(aerodynamicForcesandMoments1.Coefficients, mux61.y) annotation(
+        Line);
+      connect(forceInBodyAxis1.Forces_w, aerodynamicForcesandMoments1.Forces) annotation(
+        Line);
+      connect(aerodynamicForcesandMoments1.qbar, dynamicPressure1.qbar) annotation(
+        Line(points = {{-69, 8}, {-69, 0}, {7, 0}}, color = {0, 0, 127}));
+      connect(sixDOFEoM1.Vb, incidenceSideslipandAirspeed1.Vb) annotation(
+        Line(points = {{48, 76}, {88, 76}, {88, 18}, {88, 18}}, color = {0, 0, 127}, thickness = 0.5));
+      connect(incidenceSideslipandAirspeed1.Vb, sixDOFEoM1.Vb) annotation(
+        Line);
+      connect(incidenceSideslipandAirspeed1.alpha, aerodynamicCoefficients1.alpha) annotation(
+        Line(points = {{87, -1}, {87, -16}, {-86, -16}, {-86, -30}, {-70, -30}}, color = {0, 0, 127}));
+      connect(aerodynamicCoefficients1.beta, incidenceSideslipandAirspeed1.beta) annotation(
+        Line(points = {{-70, -32}, {-80, -32}, {-80, -16}, {94, -16}, {94, -1}}, color = {0, 0, 127}));
+      connect(aerodynamicCoefficients1.Airspeed, incidenceSideslipandAirspeed1.Airspeed) annotation(
+        Line(points = {{-70, -36}, {-76, -36}, {-76, -14}, {80, -14}, {80, -1}}, color = {0, 0, 127}));
+      connect(forceInBodyAxis1.beta, incidenceSideslipandAirspeed1.beta) annotation(
+        Line);
+      connect(forceInBodyAxis1.alpha, incidenceSideslipandAirspeed1.alpha) annotation(
+        Line);
+      connect(dynamicPressure1.Vb, sixDOFEoM1.Vb) annotation(
+        Line(points = {{28, 6}, {40, 6}, {40, 20}, {56, 20}, {56, 76}, {48, 76}, {48, 76}, {48, 76}}, color = {0, 0, 127}, thickness = 0.5));
+      connect(AirDensity.y, dynamicPressure1.rho) annotation(
+        Line(points = {{60, 2}, {60, 2}, {60, -6}, {28, -6}, {28, -4}}, color = {0, 0, 127}));
+      connect(sixDOFEoM1.Vb, dynamicPressure1.Vb) annotation(
+        Line(points = {{48, 76}, {56, 76}, {56, 20}, {40, 20}, {40, 4}, {28, 4}, {28, 6}}, color = {0, 0, 127}, thickness = 0.5));
+      connect(Thrust, forceInBodyAxis1.Thrust) annotation(
+        Line);
+      connect(forceInBodyAxis1.Forces_b, sixDOFEoM1.Forces) annotation(
+        Line);
+      connect(forceInBodyAxis1.EulerAngles, sixDOFEoM1.EulerAngles) annotation(
+        Line);
+      connect(forceInBodyAxis1.Thrust, Thrust) annotation(
+        Line);
+      connect(Xe, sixDOFEoM1.Xe) annotation(
+        Line(points = {{130, 64}, {50, 64}, {50, 66}, {48, 66}, {48, 66}}, color = {0, 0, 127}, thickness = 0.5));
+      connect(Xe, sixDOFEoM1.Xe) annotation(
+        Line);
+      connect(aerodynamicCoefficients1.omega_b, sixDOFEoM1.omega_b) annotation(
+        Line(points = {{-70, -56}, {-72, -56}, {-72, -68}, {72, -68}, {72, 50}, {48, 50}, {48, 50}}, color = {0, 0, 127}, thickness = 0.5));
+      connect(aerodynamicCoefficients1.Cn, mux61.u6) annotation(
+        Line(points = {{-32, -55}, {-20, -55}}, color = {0, 0, 127}));
+      connect(aerodynamicCoefficients1.Cm, mux61.u5) annotation(
+        Line(points = {{-32, -51.5}, {-20, -51.5}}, color = {0, 0, 127}));
+      connect(aerodynamicCoefficients1.Cl, mux61.u4) annotation(
+        Line(points = {{-32, -48}, {-20, -48}}, color = {0, 0, 127}));
+      connect(aerodynamicCoefficients1.CY, mux61.u3) annotation(
+        Line(points = {{-32, -38}, {-20, -38}}, color = {0, 0, 127}));
+      connect(aerodynamicCoefficients1.CD, mux61.u2) annotation(
+        Line(points = {{-32, -34.5}, {-20, -34.5}}, color = {0, 0, 127}));
+      connect(aerodynamicCoefficients1.CL, mux61.u1) annotation(
+        Line(points = {{-32, -31}, {-20, -31}}, color = {0, 0, 127}));
+      connect(Elevator, aerodynamicCoefficients1.Elevator) annotation(
+        Line(points = {{-120, 32}, {-92, 32}, {-92, -40}, {-70, -40}, {-70, -40}}, color = {0, 0, 127}));
+      connect(aerodynamicCoefficients1.Elevator, Elevator) annotation(
+        Line(points = {{-70, -40}, {-92, -40}, {-92, 30}, {-120, 30}, {-120, 32}}, color = {0, 0, 127}));
+      connect(Aileron, aerodynamicCoefficients1.Aileron) annotation(
+        Line(points = {{-118, -8}, {-96, -8}, {-96, -42}, {-70, -42}, {-70, -42}}, color = {0, 0, 127}));
+      connect(aerodynamicCoefficients1.Aileron, Aileron) annotation(
+        Line(points = {{-70, -42}, {-96, -42}, {-96, -8}, {-118, -8}, {-118, -8}}, color = {0, 0, 127}));
       connect(Rudder, aerodynamicCoefficients1.Rudder) annotation(
+        Line(points = {{-118, -46}, {-69, -46}, {-69, -47}}, color = {0, 0, 127}));
+      connect(aerodynamicCoefficients1.Rudder, Rudder) annotation(
+        Line(points = {{-69, -47}, {-108, -47}, {-108, -46}, {-118, -46}}, color = {0, 0, 127}));
+      connect(Aileron, aerodynamicCoefficients1.Aileron) annotation(
         Line);
       connect(Elevator, aerodynamicCoefficients1.Elevator) annotation(
         Line);
-      connect(Aileron, aerodynamicCoefficients1.Aileron) annotation(
-        Line);
-      connect(aerodynamicCoefficients1.omega_b, sixDOFEoM1.omega_b) annotation(
-        Line);
-      connect(aerodynamicCoefficients1.Rudder, Rudder) annotation(
-        Line);
-      connect(aerodynamicCoefficients1.Aileron, Aileron) annotation(
-        Line);
-      connect(aerodynamicCoefficients1.Elevator, Elevator) annotation(
-        Line);
-      connect(aerodynamicCoefficients1.Airspeed, incidenceSideslipandAirspeed1.Airspeed) annotation(
-        Line);
-      connect(aerodynamicCoefficients1.beta, incidenceSideslipandAirspeed1.beta) annotation(
-        Line);
-      connect(aerodynamicCoefficients1.alpha, incidenceSideslipandAirspeed1.alpha) annotation(
-        Line);
-      connect(aerodynamicCoefficients1.CL, mux61.u1) annotation(
-        Line(points = {{46, -24}, {0, -24}}, color = {0, 0, 127}));
-      connect(aerodynamicCoefficients1.CD, mux61.u2) annotation(
-        Line(points = {{46, -28.5}, {0, -28.5}}, color = {0, 0, 127}));
-      connect(aerodynamicCoefficients1.CY, mux61.u3) annotation(
-        Line(points = {{46, -33}, {0, -33}}, color = {0, 0, 127}));
-      connect(aerodynamicCoefficients1.Cl, mux61.u4) annotation(
-        Line(points = {{46, -45}, {0, -45}}, color = {0, 0, 127}));
-      connect(aerodynamicCoefficients1.Cm, mux61.u5) annotation(
-        Line(points = {{46, -49.5}, {0, -49.5}}, color = {0, 0, 127}));
-      connect(aerodynamicCoefficients1.Cn, mux61.u6) annotation(
-        Line(points = {{46, -54}, {0, -54}}, color = {0, 0, 127}));
-      connect(Xe, sixDOFEoM1.Xe);
 /*
-  if mod(fmsclock.y * 1000.0, 2.0) == 0.0 then
-    clkoutpulse = not pre(clkoutpulse);
-  else
-    clkoutpulse = pre(clkoutpulse);
-  end if;
-  connect(clkoutpulse, fmsclksqwave);
-  connect(fmsclock.y, fmsclkout) annotation(
-    Line);
-  */
-      connect(forceInBodyAxis1.Thrust, Thrust);
-      connect(forceInBodyAxis1.EulerAngles, sixDOFEoM1.EulerAngles);
-      connect(forceInBodyAxis1.beta, incidenceSideslipandAirspeed1.beta);
-      connect(forceInBodyAxis1.alpha, incidenceSideslipandAirspeed1.alpha);
-      connect(forceInBodyAxis1.Forces_w, aerodynamicForcesandMoments1.Forces);
-      connect(forceInBodyAxis1.Forces_b, sixDOFEoM1.Forces);
-      connect(aerodynamicForcesandMoments1.qbar, dynamicPressure1.qbar);
-      connect(aerodynamicForcesandMoments1.Coefficients, mux61.y);
-      connect(aerodynamicForcesandMoments1.Moments, sixDOFEoM1.Moments);
-      connect(dynamicPressure1.Vb, sixDOFEoM1.Vb);
-      connect(dynamicPressure1.rho, AirDensity.y);
-      connect(incidenceSideslipandAirspeed1.Vb, sixDOFEoM1.Vb);
+if mod(fmsclock.y * 1000.0, 2.0) == 0.0 then
+clkoutpulse = not pre(clkoutpulse);
+else
+clkoutpulse = pre(clkoutpulse);
+end if;
+connect(clkoutpulse, fmsclksqwave);
+connect(fmsclock.y, fmsclkout) annotation(
+Line);
+*/
 /* Inputs */
-      connect(Thrust, forceInBodyAxis1.Thrust);
+      connect(Thrust, forceInBodyAxis1.Thrust) annotation(
+        Line(points = {{-116, 70}, {-86, 70}, {-86, 66}, {-76, 66}, {-76, 68}}, color = {0, 0, 127}));
 /* Outputs */
-      connect(Vb, sixDOFEoM1.Vb);
-      connect(EulerAngles, sixDOFEoM1.EulerAngles);
-      connect(omega_b, sixDOFEoM1.omega_b);
-      connect(DCMbe, sixDOFEoM1.DCMbe);
+      connect(Vb, sixDOFEoM1.Vb) annotation(
+        Line(points = {{108, 88}, {80, 88}, {80, 76}, {48, 76}, {48, 76}}, color = {0, 0, 127}, thickness = 0.5));
+      connect(EulerAngles, sixDOFEoM1.EulerAngles) annotation(
+        Line(points = {{128, 42}, {82, 42}, {82, 58}, {48, 58}, {48, 58}}, color = {0, 0, 127}, thickness = 0.5));
+      connect(omega_b, sixDOFEoM1.omega_b) annotation(
+        Line(points = {{132, 22}, {112, 22}, {112, 36}, {72, 36}, {72, 50}, {48, 50}, {48, 50}}, color = {0, 0, 127}, thickness = 0.5));
+      connect(DCMbe, sixDOFEoM1.DCMbe) annotation(
+        Line(points = {{110, -18}, {104, -18}, {104, 40}, {48, 40}, {48, 40}}, color = {0, 0, 127}, thickness = 0.5));
       annotation(
         Icon(coordinateSystem(grid = {0.5, 0.5})));
     end CessnaAircraft;

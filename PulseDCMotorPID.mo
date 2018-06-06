@@ -1,7 +1,4 @@
-within InterProcessCommunication.Examples.CombinedExamples;
-
-model PulsePIDandMotor"PID and Motor combine model with Pulse input"
-extends Modelica.Icons.Example;
+model PulseDCMotorPID"PID and Motor combine model with Pulse input"
  Modelica.Blocks.Continuous.PID PID( Td = 0, Ti = 10 ^ 20, k = 15)  annotation(
     Placement(visible = true, transformation(origin = {-30, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Feedback feedback1 annotation(
@@ -12,7 +9,7 @@ extends Modelica.Icons.Example;
     Placement(visible = true, transformation(origin = {70, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor1 annotation(
     Placement(visible = true, transformation(origin = {90, -28}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
- Modelica.Blocks.Sources.Pulse pulse1(amplitude = 1020, offset = 0, period = 20, startTime = 0) annotation(
+ Modelica.Blocks.Sources.Pulse pulse1(amplitude = 833, offset = 0, period = 20, startTime = 0) annotation(
     Placement(visible = true, transformation(origin = {-90, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(pulse1.y,feedback1.u1) annotation(
@@ -34,8 +31,7 @@ This is a combined model for PID and Motor model with square pulse input.
 </p>
 <p>
 <b>License:</b> OSMC-PL v1.2 2017<br /><br />
-<b>Credits:</b> ModeliCon Infotech Team <br />Ankur Gajjar <br />Shubham Patne <br />Jal Panchal <br />Ritesh Sharma <br />Pavan P <br /> 
 </p>
 </html>"));
 
-end PulsePIDandMotor;
+end PulseDCMotorPID;
