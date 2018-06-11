@@ -60,10 +60,10 @@ parameter Real b = 10.911 ;//span
 parameter Real W[3]  = m*{0,0, -9.8};//gravitational force
 Real CL; //Coeff of Lift
 Real CD;//Coeff of Drag
-//Real CY;//Coeff of Sideslip
-//Real Cl;//Roll coeff
+Real CY;//Coeff of Sideslip
+Real Cl;//Roll coeff
 Real Cm;//Pitch coeff
-//Real Cn;//Yaw coeff 
+Real Cn;//Yaw coeff 
 
 
 //// environmental constants
@@ -122,7 +122,7 @@ Real D;
 Real Q;
 Real alpha;
 Real alphadot;
-
+Real beta;
 
 RealOutput[3] Force annotation(
     Placement(visible = true, transformation(origin = {110, 30}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, 30}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));//Forces
@@ -136,21 +136,32 @@ RealOutput[3] Moment annotation(
 equation
 alpha = atan2(vel[3],vel[1]);
 alphadot = der(alpha);
+beta = asin(vel[2] / norm(vel));
+
 Q=0.5*rho*norm(vel)*norm(vel);
+
+
+
 CL = CL0+CL_alpha*alpha+((CL_q*omega[2]*cbar)/(2*norm(vel)))+CL_delta_e*delta[2];
+CD = CD0+K_drag*CL^2;// + CDbeta * beta + CDdeltae * Elevator;
+CY = Cy_beta * beta + Cy_p * (omega[1] * b) / (2 * norm(vel)) + Cy_r * (omega[3] * b) / (2 * norm(vel)) + Cy_delta_a * delta[1] + Cy_delta_r*delta[3];
+
+Cl = Cl_beta * beta + Cl_p * (omega[1] * b) / (2 * norm(vel)) + Cl_r * (omega[3] * b) / (2 * norm(vel)) + Cl_delta_a * delta[1] + Cl_delta_r * delta[3];
 Cm  = Cm0+Cm_alpha*alpha+((Cm_q*omega[2]*cbar)/(2*norm(vel)))+Cm_delta_e*delta[2];
-CD = CD0+K_drag*CL^2;
+Cn = Cn_beta * beta + Cn_p * (omega[1] * b) / (2 * norm(vel)) + Cn_r * (omega[3] * b) / (2 * norm(vel)) + Cn_delta_a * delta[1] + Cn_delta_r * delta[3];
+
+
 
 L = CL*s*Q;
 D = CD*s*Q;
 
 Moment[2] = Cm*s*cbar*Q;
-Moment[1] = 0;
-Moment[3] = 0;
+Moment[1] = Cl*Q*s*b;
+Moment[3] = Cn*Q*s*b;
 
 Force[1] = -D*cos(alpha)+L*sin(alpha)+thrust[1] - m*g*sin(angles[2]);
 Force[3] = -D*sin(alpha)-L*cos(alpha)+m*g*cos(angles[2]);
-Force[2] = 0;
+Force[2] = CY*Q*s;
 
 
 

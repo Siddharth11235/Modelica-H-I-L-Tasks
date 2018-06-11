@@ -1,13 +1,13 @@
 model TestFm
-parameter  Real del[3] = {0,-0.0304977268414434,0};
-parameter  Real thrust[3] = {1526.49255280348 , 0, 0};
+parameter  Real del[3] = {0,-0.030497,0};
+parameter  Real thrust[3] = {1526.49 , 0, 0};
 parameter Real m = 1043.26;
 parameter Real s = 16.1651;//reference area
 parameter Real cBar = 1.493 ;//average chord
 parameter Real b = 10.911 ;//span
 parameter Real W[3]  = m*{0,0, 9.8};//gravitational force
 
-parameter Real alphazero = 0.0105761613094709;
+parameter Real alphazero = 0.010576;
 
 
   
