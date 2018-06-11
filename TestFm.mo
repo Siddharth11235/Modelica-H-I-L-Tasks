@@ -7,18 +7,18 @@ parameter Real cBar = 1.493 ;//average chord
 parameter Real b = 10.911 ;//span
 parameter Real W[3]  = m*{0,0, 9.8};//gravitational force
 
-
+parameter Real alphazero = 0.0105761613094709;
 
 
   
   ForceMoment_Gen forceMoment_Gen1( W =W,  b= b, cbar = cBar, s = s)  annotation(
     Placement(visible = true, transformation(origin = {-56, -12}, extent = {{-26, -26}, {26, 26}}, rotation = 0)));
-  Flight6DOF flight6DOF1(J = {{1285.31, 0, 0}, {0, 1824.93, 0}, {0, 0, 2666.893}}, g = {0,0, 9.8}, mass = m, omega( fixed = true,start = {0, 0, 0}), pos(start = {0, 0, -1000}), v(start = {60*cos(0.0105761613094709), 0, 60*sin(0.0105761613094709)}))  annotation(
+  Flight6DOF flight6DOF1(J = {{1285.31, 0, 0}, {0, 1824.93, 0}, {0, 0, 2666.893}}, g = {0,0, 9.8},mass = m, omega( fixed = true,start = {0, 0, 0}), pos(start = {0, 0, -1000}), v(start = {60*cos(alphazero), 0, 60*sin(alphazero)}))  annotation(
     Placement(visible = true, transformation(origin = {36, -12}, extent = {{-26, -26}, {26, 26}}, rotation = 0))); 
     
 initial equation
-forceMoment_Gen1.alpha = 0.0105761613094709;
-forceMoment_Gen1.angles[2] = 0.0105761613094709;
+forceMoment_Gen1.alpha = alphazero;
+forceMoment_Gen1.angles[2] = alphazero;
  
  equation
   connect(flight6DOF1.angles, forceMoment_Gen1.angles) annotation(

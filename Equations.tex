@@ -25,7 +25,7 @@ Also represented as: $C_{b/n} = fn(\Theta)$
   \begin{bmatrix}
     0 & -R & Q \\
     R & 0 & -P\\
-    P & -Q & 0
+    -Q & P & 0
   \end{bmatrix}
 \]
 \\
@@ -47,11 +47,26 @@ ${}^b\dot{v}^b_{CM/e} =(\frac{1}{m})F^b_{A,T} + C_{b/n} \times g + \Omega^b _{b/
 ${}^e \dot{p}^n_{CM/T} = C_{n/b} \times v^b_{CM/e} $
 \\ \\
 ${}^b\dot{\omega}^b_{b/e} = inv(J^b) \times [M^b_{A,T}- \Omega^b_{b/e}\times J^b \times \omega^b_{b/e}]$
+\\
 
+These are the equations in the force-moment model.
 
-
-
-
-
+$\alpha = tan^-1 (w/u) $
+\\
+$Q = 0.5 \times \rho \times \lVert V \rVert ^2 $
+\\\\
+$C_{L} = C_{L0} + C_{L \alpha} \times \alpha + (\frac{C_{Lq} \times q \times c_{bar}}{2 \times \lVert V \rVert}) + C_{Lde} \times \delta_{e}  $
+\\
+$C_{m} = C_{m0} + C{m \alpha} \times \alpha +(\frac{C_{mq}*q*c_{bar}}{(2 \times \lVert V \rVert})+C_{mde} \times \delta_{e}$
+\\
+$C_{D}  = C_{D0} + K_{drag} \times C_{L} ^2$
+\\ \\
+$L = C_{L} \times s \times Q$
+\\ 
+$D = C_{D} \times s \times Q$
+\\ \\
+$Force = \left[ \begin{array}{c} -D \times cos(\alpha)+L \times sin(\alpha)+ thrust - mg \times sin(\theta)\\0 \\ -D \times sin(\alpha)-L \times cos(\alpha)+mg \times cos(\theta) \end{array} \right]$
+\\ \\
+$Moment  = \left[ \begin{array}{c} 0\\C_{m} \times s\times c_{bar} \times Q \\ 0 \end{array} \right]$
 
  \end{document}

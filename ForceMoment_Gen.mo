@@ -134,7 +134,7 @@ RealOutput[3] Moment annotation(
 
 
 equation
-alpha = atan2(vel[3],60);
+alpha = atan2(vel[3],vel[1]);
 alphadot = der(alpha);
 Q=0.5*rho*norm(vel)*norm(vel);
 CL = CL0+CL_alpha*alpha+((CL_q*omega[2]*cbar)/(2*norm(vel)))+CL_delta_e*delta[2];
@@ -148,8 +148,8 @@ Moment[2] = Cm*s*cbar*Q;
 Moment[1] = 0;
 Moment[3] = 0;
 
-Force[1] = -D*cos(alpha)+L*sin(alpha)-m*g*sin(alpha)+thrust[1];
-Force[3] = -D*sin(alpha)-L*cos(alpha)+m*g*cos(alpha);
+Force[1] = -D*cos(alpha)+L*sin(alpha)+thrust[1] - m*g*sin(angles[2]);
+Force[3] = -D*sin(alpha)-L*cos(alpha)+m*g*cos(angles[2]);
 Force[2] = 0;
 
 

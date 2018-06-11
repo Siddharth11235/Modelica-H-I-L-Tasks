@@ -34,14 +34,14 @@ RealInput Force[3]annotation(
 RealInput Moment[3]annotation(
     Placement(visible = true, transformation(origin = {-120, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-106, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0))); //Momentum
     
-Modelica.Blocks.Interfaces.RealOutput v[3](each start = 0, each fixed = true ) annotation(
+Modelica.Blocks.Interfaces.RealOutput v[3] annotation(
     Placement(visible = true, transformation(origin = {110, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); //Linear velocity
-Modelica.Blocks.Interfaces.RealOutput pos[3](each start = 0,each fixed = true )annotation(
+Modelica.Blocks.Interfaces.RealOutput pos[3]annotation(
     Placement(visible = true, transformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   //Position (Displacement) //Displacement
-Modelica.Blocks.Interfaces.RealOutput omega[3](each start = 0, each fixed = true ) annotation(
+Modelica.Blocks.Interfaces.RealOutput omega[3] annotation(
     Placement(visible = true, transformation(origin = {110, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  //Angular velocity around the CM
-Modelica.Blocks.Interfaces.RealOutput angles[3](each start = 0, each fixed = true ) annotation(
+Modelica.Blocks.Interfaces.RealOutput angles[3] annotation(
     Placement(visible = true, transformation(origin = {110, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  //Angular displacement
   parameter Real mass = 1;
 parameter Real g[3] = {0, 0, 9.8};
@@ -55,7 +55,7 @@ Real euler_rates[3];
 
 
 equation
-  vdot = 1 / mass * Force + DCM * g + OMEGA * v;
+  vdot = 1 / mass * Force  + OMEGA * v;
   der(v) = vdot;
   der(pos) = inv(DCM)*v;
   omegadot = inv(J) * (Moment- OMEGA * J * omega);
