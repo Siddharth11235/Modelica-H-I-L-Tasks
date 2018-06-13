@@ -57,7 +57,7 @@ parameter Real m = 1043.26;
 parameter Real s = 16.1651;//reference area
 parameter Real cbar = 1.493 ;//average chord
 parameter Real b = 10.911 ;//span
-parameter Real W[3]  = m*{0,0, -9.8};//gravitational force
+parameter Real W[3]  = m*{0,0, -9.81};//gravitational force
 Real CL; //Coeff of Lift
 Real CD;//Coeff of Drag
 Real CY;//Coeff of Sideslip
@@ -82,6 +82,9 @@ parameter Real g   = 9.81; // gravity
 parameter Real CD0     = 0.036;
 parameter Real K_drag  = 0.0830304;
 parameter Real CD_beta = 0.17;
+parameter Real CD_alpha;
+parameter Real CD_q;
+parameter Real CD_delta_e;
 
 //side force
 parameter Real Cy_beta    = -0.31;
@@ -91,30 +94,30 @@ parameter Real Cy_delta_r = 0.187;
 parameter Real Cy_delta_a = 0;     
 
 // lift
-parameter Real CL0        = 0.25;   
-parameter Real CL_alpha   = 4.47;
-parameter Real CL_q       = 3.9;
-parameter Real CL_delta_e = 0.3476;
+parameter Real CL0;   
+parameter Real CL_alpha;
+parameter Real CL_q ;
+parameter Real CL_delta_e;
 
 // rolling moment
-parameter Real Cl_beta    = -0.089;
-parameter Real Cl_p       = -0.47;
-parameter Real Cl_r       = 0.096;
-parameter Real Cl_delta_a = -0.09;
-parameter Real Cl_delta_r = 0.0147;
+parameter Real Cl_beta;
+parameter Real Cl_p ;
+parameter Real Cl_r;
+parameter Real Cl_delta_a;
+parameter Real Cl_delta_r;
 
 // pitching moment
-parameter Real Cm0        = -0.02;
-parameter Real Cm_alpha   = -1.8;
-parameter Real Cm_q       = -12.4;
-parameter Real Cm_delta_e = -1.28;
+parameter Real Cm0;
+parameter Real Cm_alpha ;
+parameter Real Cm_q ;
+parameter Real Cm_delta_e ;
 
 // yawing moment
-parameter Real Cn_beta    = 0.065;
-parameter Real Cn_p       = -0.03;
-parameter Real Cn_r       = -0.99;
-parameter Real Cn_delta_a = -0.0053;
-parameter Real Cn_delta_r = -0.0657;
+parameter Real Cn_beta ;
+parameter Real Cn_p ;
+parameter Real Cn_r;
+parameter Real Cn_delta_a ;
+parameter Real Cn_delta_r;
 
 Real L;
 Real D;
@@ -143,7 +146,7 @@ Q=0.5*rho*norm(vel)*norm(vel);
 
 
 CL = CL0+CL_alpha*alpha+((CL_q*omega[2]*cbar)/(2*norm(vel)))+CL_delta_e*delta[2];
-CD = CD0+K_drag*CL^2;// + CDbeta * beta + CDdeltae * Elevator;
+CD =  CD0+CD_alpha*alpha+((CD_q*omega[2]*cbar)/(2*norm(vel)))+CD_delta_e*delta[2];// + CDbeta * beta + CDdeltae * Elevator;
 CY = Cy_beta * beta + Cy_p * (omega[1] * b) / (2 * norm(vel)) + Cy_r * (omega[3] * b) / (2 * norm(vel)) + Cy_delta_a * delta[1] + Cy_delta_r*delta[3];
 
 Cl = Cl_beta * beta + Cl_p * (omega[1] * b) / (2 * norm(vel)) + Cl_r * (omega[3] * b) / (2 * norm(vel)) + Cl_delta_a * delta[1] + Cl_delta_r * delta[3];
