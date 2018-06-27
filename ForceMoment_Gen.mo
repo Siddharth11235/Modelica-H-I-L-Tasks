@@ -146,7 +146,8 @@ Q=0.5*rho*norm(vel)*norm(vel);
 
 
 CL = CL0+CL_alpha*alpha+((CL_q*omega[2]*cbar)/(2*norm(vel)))+CL_delta_e*delta[2];
-CD =  CD0+CD_alpha*alpha+((CD_q*omega[2]*cbar)/(2*norm(vel)))+CD_delta_e*delta[2];// + CDbeta * beta + CDdeltae * Elevator;
+//CD =  CD0+CD_alpha*alpha+((CD_q*omega[2]*cbar)/(2*norm(vel)))+CD_delta_e*abs(delta[2]);// + CDbeta * beta + CDdeltae * Elevator;
+CD = CD0 + K_drag*CL^2;
 CY = Cy_beta * beta + Cy_p * (omega[1] * b) / (2 * norm(vel)) + Cy_r * (omega[3] * b) / (2 * norm(vel)) + Cy_delta_a * delta[1] + Cy_delta_r*delta[3];
 
 Cl = Cl_beta * beta + Cl_p * (omega[1] * b) / (2 * norm(vel)) + Cl_r * (omega[3] * b) / (2 * norm(vel)) + Cl_delta_a * delta[1] + Cl_delta_r * delta[3];

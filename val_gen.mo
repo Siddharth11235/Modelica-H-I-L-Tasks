@@ -16,13 +16,13 @@ Real D;
 Real Q;
   
 
-parameter Real V = 60;
+ Real V;
 
 parameter Real[3] omega = {0,0.0,0};
 
 Real CL;
 Real CD;
-Real alpha;
+parameter Real alpha = 0.06;
 Real de;
 Real thrust;
 Real theta = alpha;
@@ -45,7 +45,7 @@ Q=0.5*rho*V^2;
 
 0  = Cm0+Cm_alpha*alpha+((Cm_q*omega[2]*cbar)/(2*V))+Cm_delta_e*de;
 CL = CL0+CL_alpha*alpha+((CL_q*omega[2]*cbar)/(2*V))+CL_delta_e*de;
-CD =  CD0+CD_alpha*alpha+((CD_q*omega[2]*cbar)/(2*V))+CD_delta_e*de;// + CDbeta * beta + CDdeltae * Elevator;
+CD = CD0+CD_alpha*alpha+((CD_q*omega[2]*cbar)/(2*V))+CD_delta_e*abs(de);// + CDbeta * beta + CDdeltae * Elevator;
 // forces and moments
 
 L = CL*s*Q;
