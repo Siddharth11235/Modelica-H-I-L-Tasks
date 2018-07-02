@@ -1,62 +1,98 @@
-model Wind6DOF
- 
+block Wind6DOF
 
-parameter Real rho = 1.225;
-parameter Real m = 1043.26;//1.56 for zagi
-parameter Real S_ref = 16.1651;//reference area
-parameter Real C_bar = 1.493 ;//average chord
-parameter Real b = 10.911 ;//span
+import Modelica.Math.Matrices.*;
+import Modelica.SIunits.*;
+import Modelica.Blocks.Interfaces.*;
+import Modelica.Math.Vectors.*;
+
+
+RealInput thrust annotation(
+    Placement(visible = true, transformation(origin = {-110, 33}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 33}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));//Thrust force
+    
+RealInput[3] delta annotation(
+    Placement(visible = true, transformation(origin = {-110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    
+
+Modelica.Blocks.Interfaces.RealOutput V annotation(start =39.8858,
+    Placement(visible = true, transformation(origin = {110, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); //Linear velocity
+
+Modelica.Blocks.Interfaces.RealOutput alpha annotation(start =0.1,
+    Placement(visible = true, transformation(origin = {110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); //Angle of attack
+
+Modelica.Blocks.Interfaces.RealOutput beta annotation(start = 0,
+    Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); //Angle of sideslip
+        
+    
+Modelica.Blocks.Interfaces.RealOutput pos[3]annotation(
+    Placement(visible = true, transformation(origin = {110, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  //Position (Displacement) //Displacement
+  
+Modelica.Blocks.Interfaces.RealOutput omega[3] annotation(
+    Placement(visible = true, transformation(origin = {110, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  //Angular velocity around the CM
+Modelica.Blocks.Interfaces.RealOutput angles[3] annotation(
+    Placement(visible = true, transformation(origin = {110, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  //mu, gamma, and chi
+    
+
+
+
+
+
+parameter Real rho;
+parameter Real m;//1.56 for zagi
+parameter Real S_ref;//reference area
+parameter Real C_bar ;//average chord
+parameter Real b ;//span
 parameter Real g  = 9.81;//gravitational force
 //parameter Real b= 1.4224, C_bar = 0.3302,s = 0.2589;
 
 
 
-parameter Real CD0    = 0.036;//= 0.01631;for Zagi
-parameter Real K_drag  = 0.0830304;//for cessna
-parameter Real CD_beta = 0.17;//for cessna
-parameter Real CD_alpha= 0.2108;
-parameter Real CD_q = 0;
-parameter Real CD_delta_e= 0.3045;
+parameter Real CD0;//= 0.01631;for Zagi
+parameter Real K_drag ;//for cessna
+parameter Real CD_beta;//for cessna
+parameter Real CD_alpha;
+parameter Real CD_q;
+parameter Real CD_delta_e;
 
 //side force
-parameter Real Cy_beta  = -0.31;//for cessna
-parameter Real Cy_p  = -0.037;//for cessna
-parameter Real Cy_r   = 0.21;//for cessna
-parameter Real Cy_delta_r = 0.187; //for cessna
-parameter Real Cy_delta_a= 0;     //for cessna
+parameter Real Cy_beta;//for cessna
+parameter Real Cy_p;//for cessna
+parameter Real Cy_r;//for cessna
+parameter Real Cy_delta_r; //for cessna
+parameter Real Cy_delta_a;     //for cessna
 
 // lift
-parameter Real CL0 = 0.25;   //for cessna
-parameter Real CL_alpha = 4.47;//for cessna
-parameter Real CL_q = 3.9;//for cessna
-parameter Real CL_delta_e = 0.3476;//for cessna
+parameter Real CL0 ;   //for cessna
+parameter Real CL_alpha;//for cessna
+parameter Real CL_q;//for cessna
+parameter Real CL_delta_e;//for cessna
 
 // rolling moment
-parameter Real Cl_beta = -0.089;//for cessna
-parameter Real Cl_p = -0.47;//for cessna
-parameter Real Cl_r = 0.096;//for cessna
-parameter Real Cl_delta_a= -0.09;//for cessna
-parameter Real Cl_delta_r = 0.0147;//for cessna
+parameter Real Cl_beta;//for cessna
+parameter Real Cl_p;//for cessna
+parameter Real Cl_r;//for cessna
+parameter Real Cl_delta_a;//for cessna
+parameter Real Cl_delta_r ;//for cessna
 
 // pitching moment
-parameter Real Cm0 = -0.02;//for cessna
-parameter Real Cm_alpha = -1.8;//for cessna
-parameter Real Cm_q   = -12.4;//for cessna
-parameter Real Cm_delta_e = -1.28;//for cessna
+parameter Real Cm0;//for cessna
+parameter Real Cm_alpha ;//for cessna
+parameter Real Cm_q;//for cessna
+parameter Real Cm_delta_e;//for cessna
 
 // yawing moment
-parameter Real Cn_beta = 0.065;//for cessna
-parameter Real Cn_p  = -0.03;//for cessna
-parameter Real Cn_r = -0.99;//for cessna
-parameter Real Cn_delta_a = -0.0053;//for cessna
-parameter Real Cn_delta_r = -0.0657;//for cessna
+parameter Real Cn_beta;//for cessna
+parameter Real Cn_p;//for cessna
+parameter Real Cn_r;//for cessna
+parameter Real Cn_delta_a ;//for cessna
+parameter Real Cn_delta_r;//for cessna
 
 
 //Initial conditions. (delta[2], thrust[1] and the others are straightforward)
 
-parameter Real I_xx = 1285.31;
-parameter Real I_yy = 1824.93;
-parameter Real I_zz = 2666.893;
+parameter Real I_xx;
+parameter Real I_yy;
+parameter Real I_zz;
 
 Real CL;
 Real CD;
@@ -67,52 +103,29 @@ Real Cn;
 Real CX;
 Real CZ;
 //Params
-parameter Real[3] delta = {0,-0.15625,0};
-//Modelica.Blocks.Sources.RealExpression[3] delta (y = if time > 100 and time < 105 then  {0,-0.15625+3.1412 /180,0} else {0,-0.15625,0})  annotation(    Placement(visible = true, transformation(origin = {-112, 1}, extent = {{-26, -47}, {26, 47}}, rotation = 0)));
-parameter  Real thrust = 1112.82;
+//parameter Real delta[1] = 0;
+//parameter Real delta[3] = 0;
 
-//12 states
-Real p (start = 0);
-Real q (start = 0);
-Real r (start = 0);
+//Modelica.Blocks.Sources.RealExpression delta[2] (y = if time > 100 and time < 105 then  -0.15625+3.1412 /180 else -0.15625)  annotation(    Placement(visible = true, transformation(origin = {-112, 1}, extent = {{-26, -47}, {26, 47}}, rotation = 0)));
+//parameter Real delta[2] = -0.15625;
 
-
-Real V (start =39.8858);
-Real alpha (start =0.1);
-Real beta (start = 0);
-
-Real phi;
-Real theta;
-Real psi;
-
-Real x (start = 0);
-Real y (start = 0);
-Real z (start = 100);
+//parameter  Real thrust = 1112.82;
 
 
-
-
-
-
-
-Real gamma (start = 0);
-Real chi (start = 0); 
-Real mu (start = 0); 
 
 Real qbar = 0.5*rho*V^2;
 
 Real Vdot;
 Real alphadot;
 Real betadot;
-Real gammadot;
 
 Real pdot;
 Real qdot;
 Real rdot;
 
-Real phidot;
-Real thetadot;
-Real psidot;
+Real mudot;
+Real gammadot;
+Real chidot;
 
 Real xdot;
 Real ydot;
@@ -120,17 +133,17 @@ Real zdot;
 
 
 equation
-CL = CL0+CL_alpha*alpha+((CL_q*q*C_bar)/(2*V))+CL_delta_e*delta[2];
-//CD =  CD0+CD_alpha*alpha+((CD_q*q*C_bar)/(2*V))+CD_delta_e*abs(delta[2]);// + CDbeta * beta + CDdeltae * Elevator;
+CL = CL0+CL_alpha*alpha+((CL_q*omega[2]*C_bar)/(2*V))+CL_delta_e*delta[2];
+//CD =  CD0+CD_alpha*alpha+((CD_q*omega[2]*C_bar)/(2*V))+CD_delta_e*abs(delta[2]);// + CDbeta * beta + CDdelta[2] * Elevator;
 CD = CD0 + K_drag*CL^2;
-CY = Cy_beta * beta + Cy_p * (p * b) / (2 * V) + Cy_r * (r * b) / (2 * V) + Cy_delta_a * delta[1] + Cy_delta_r*delta[3];//Sideslip coeff
+CY = Cy_beta * beta + Cy_p * (omega[1]*b)/(2*V) + Cy_r *(omega[3]*b)/(2*V) + Cy_delta_a * delta[1] + Cy_delta_r*delta[3];//Sideslip coeff
 
 
-Cl = Cl_beta * beta + Cl_p * (p * b) / (2 * V) + Cl_r * (r * b) / (2 * V) + Cl_delta_a * delta[1] + Cl_delta_r * delta[3];//Rolling coeff
+Cl = Cl_beta * beta + Cl_p*(omega[1]*b)/(2*V) + Cl_r *(omega[3]*b)/(2*V) + Cl_delta_a * delta[1] + Cl_delta_r * delta[3];//Rolling coeff
 
-Cm  = Cm0+Cm_alpha*alpha+((Cm_q*q*C_bar)/(2*V))+Cm_delta_e*delta[2];//pitching coeff
+Cm  = Cm0+Cm_alpha*alpha+((Cm_q*omega[2]*C_bar)/(2*V))+Cm_delta_e*delta[2];//pitching coeff
 
-Cn = Cn_beta * beta + Cn_p * (p * b) / (2 * V) + Cn_r * (r * b) / (2 * V) + Cn_delta_a * delta[1] + Cn_delta_r * delta[3];//Yawing coeff
+Cn = Cn_beta * beta + Cn_p * (omega[1]*b)/(2*V) + Cn_r *(omega[3]*b) /(2*V) + Cn_delta_a * delta[1] + Cn_delta_r * delta[3];//Yawing coeff
 
 CX = -CD*cos(alpha) + CL*sin(alpha);
 CZ = -CD*sin(alpha) - CL*cos(alpha);
@@ -139,46 +152,40 @@ CZ = -CD*sin(alpha) - CL*cos(alpha);
 Vdot = der(V);
 alphadot = der(alpha);
 betadot = der(beta);
-gammadot = der(gamma);
 
-pdot = der(p);
-qdot = der(q);
-rdot = der(r);
+pdot = der(omega[1]);
+qdot = der(omega[2]);
+rdot = der(omega[3]);
 
-xdot = der(x);
-ydot = der(y);
-zdot = der(z);
+xdot = der(pos[1]);
+ydot = der(pos[2]);
+zdot = der(pos[3]);
 
-phidot = der(phi);
-thetadot = der(theta);
-psidot = der(psi);
-
-
-gamma=asin(cos(alpha)*cos(beta)*sin(theta)-sin(beta)*sin(phi)*cos(theta)-sin(alpha)*cos(beta)*cos(phi)*cos(theta));
-
-chi=acos((cos(psi)*cos(theta)*cos(alpha)*cos(beta)+sin(beta)*(cos(psi)*sin(theta)*sin(phi)-sin(psi)*cos(phi))+sin(alpha)*cos(beta)*(cos(psi)*sin(theta)*cos(phi)+sin(psi)*sin(phi)))/cos(gamma));
-
-mu=asin((1/cos(gamma))*(sin(theta)*cos(alpha)*sin(beta)+sin(phi)*cos(theta)*cos(beta)-sin(alpha)*sin(beta)*cos(phi)*cos(theta)));  
+mudot = der(angles[1]);
+gammadot = der(angles[2]);
+chidot = der(angles[3]);
 
 
-Vdot = (thrust*cos(alpha)*cos(beta)-0.5*CD*rho*(V^2)*S_ref-m*g*sin(gamma))/(m);
-alphadot = q - (-(g/V)*cos(gamma) + (qbar*S_ref*CL + thrust*sin(alpha))/(m*V));
-betadot = 1/(m*V)*(-thrust*cos(alpha)*sin(beta)+0.5*CY*rho*(V^2)*S_ref +m*g*sin(mu)*cos(gamma))+p*sin(alpha)-r*cos(alpha);
-
-pdot = (I_yy-I_zz)/I_xx*q*r+(0.5/I_xx*rho*(V^2)*S_ref*b*Cl);
-qdot = (I_zz-I_xx)/I_yy*p*r+(0.5/I_yy*rho*(V^2)*S_ref*C_bar*Cm);
-rdot = (I_xx-I_yy)/I_zz*p*q+(0.5/I_zz*rho*(V^2)*S_ref*b*Cn);
-
-gammadot = q;
-
-xdot=V*cos(gamma)*cos(chi);
-ydot=V*cos(gamma)*sin(chi);
-zdot=-V*sin(gamma);
-
-phidot = p+q*tan(theta)*sin(phi)+r*tan(theta)*cos(phi);
-//thetadot = q*cos(phi)-r*sin(phi);
-psidot = (q/cos(theta))*sin(phi)+(r/cos(theta))*cos(phi);
 
 
+Vdot = 1/m*(thrust*cos(alpha)*cos(beta)-0.5*rho*V^2*S_ref*(CD*cos(beta)-CY*sin(beta))-m*g*sin(angles[2]));
+
+alphadot = omega[2]-1/cos(beta)*((omega[1]*cos(alpha)+omega[3]*sin(alpha))*sin(beta)-g/V*cos(angles[2])*cos(angles[1])+0.5*rho*V^2*S_ref*CL/(m*V)+thrust*sin(alpha)/(m*V));
+
+betadot = (omega[1]*sin(alpha)-omega[3]*cos(alpha))+1/(m*V)*(-thrust*cos(alpha)*sin(beta)+0.5*rho*V^2*S_ref*(CY*cos(beta)+CD*sin(beta))+m*g*cos(angles[2])*sin(angles[1]));
+
+
+pdot = (I_yy-I_zz)/I_xx*omega[2]*omega[3]+1/(2*I_xx)*rho*V^2*S_ref*b*Cl;
+qdot = (I_zz-I_xx)/I_yy*omega[1]*omega[3]+1/(2*I_yy)*rho*V^2*S_ref*C_bar*Cm;
+rdot = (I_xx-I_yy)/I_zz*omega[1]*omega[2]+1/(2*I_zz)*rho*V^2*S_ref*b*Cn;
+
+
+xdot=V*cos(angles[2])*cos(angles[3]);
+ydot=V*cos(angles[2])*sin(angles[3]);
+zdot=-V*sin(angles[2]);
+
+mudot = omega[1]+tan(angles[2])*sin(angles[1])*omega[2]+tan(angles[2])*cos(angles[1])*omega[3];
+gammadot = cos(angles[1])*omega[2]-sin(angles[1])*omega[3];
+chidot=(1/cos(angles[2]))*sin(angles[1])*omega[2]+(1/cos(angles[2]))*cos(angles[1])*omega[3];
 
 end Wind6DOF;
