@@ -1,20 +1,24 @@
-model Wind6DOFVer
+model Wind6DOFZagi
  
 import Modelica.Math.Matrices.*;
 import SI=Modelica.SIunits;
 import Modelica.Blocks.Interfaces.*;
 
 parameter Real rho = 1.225;
-parameter Real g = 9.81;
-parameter Real m = 1043.26;//1.56 for zagi
-parameter Real S_ref = 16.1651;//reference area
-parameter Real C_bar = 1.493 ;//average chord
-parameter Real b = 10.911 ;//span
-//parameter Real b= 1.4224, cbar = 0.3302,s = 0.2589;
+parameter Real m = 1.56;//1.56 for zagi
+parameter Real S_ref = 0.2589;//reference area
+parameter Real C_bar = 0.3302 ;//average chord
+parameter Real b = 1.4224 ;//span
+parameter Real g  = 9.81;//gravitational force
+//parameter Real b= 1.4224, C_bar = 0.3302,s = 0.2589;
 
+// lift
+parameter Real CL0 = 0.09167;   //for cessna
+parameter Real CL_alpha = 3.5016;//for cessna
+parameter Real CL_q = 2.8932;//for cessna
+parameter Real CL_delta_e = 0.2724;//for cessna
 
-
-parameter Real CD0    = 0.036;//= 0.01631;for Zagi
+parameter Real CD0    = 0.01631;//= 0.01631;for Zagi
 parameter Real K_drag  = 0.0830304;//for cessna
 parameter Real CD_beta = 0.17;//for cessna
 parameter Real CD_alpha= 0.2108;
@@ -22,42 +26,41 @@ parameter Real CD_q = 0;
 parameter Real CD_delta_e= 0.3045;
 
 //side force
-parameter Real Cy_beta  = -0.31;//for cessna
-parameter Real Cy_p  = -0.037;//for cessna
+parameter Real Cy_0;
+parameter Real Cy_beta  = -0.07359;//for cessna
+parameter Real Cy_p  = 0;//for cessna
 parameter Real Cy_r   = 0.21;//for cessna
 parameter Real Cy_delta_r = 0.187; //for cessna
 parameter Real Cy_delta_a= 0;     //for cessna
 
-// lift
-parameter Real CL0 = 0.25;   //for cessna
-parameter Real CL_alpha = 4.47;//for cessna
-parameter Real CL_q = 3.9;//for cessna
-parameter Real CL_delta_e = 0.3476;//for cessna
+
 
 // rolling moment
-parameter Real Cl_beta = -0.089;//for cessna
-parameter Real Cl_p = -0.47;//for cessna
-parameter Real Cl_r = 0.096;//for cessna
-parameter Real Cl_delta_a= -0.09;//for cessna
-parameter Real Cl_delta_r = 0.0147;//for cessna
+parameter Real Cl_0 = 0;
+parameter Real Cl_beta = -0.02854;//for cessna
+parameter Real Cl_p = -0.3209;//for cessna
+parameter Real Cl_r = 0.03066;//for cessna
+parameter Real Cl_delta_a= 0.1682;//for cessna
+parameter Real Cl_delta_r = 0;//for cessna
 
 // pitching moment
-parameter Real Cm0 = -0.02;//for cessna
-parameter Real Cm_alpha = -1.8;//for cessna
-parameter Real Cm_q   = -12.4;//for cessna
-parameter Real Cm_delta_e = -1.28;//for cessna
+parameter Real Cm0 = -0.02338;//for cessna
+parameter Real Cm_alpha = -0.5675;//for cessna
+parameter Real Cm_q   = -1.3990;//for cessna
+parameter Real Cm_delta_e = -0.3254;//for cessna
 
 // yawing moment
-parameter Real Cn_beta = 0.065;//for cessna
-parameter Real Cn_p  = -0.03;//for cessna
-parameter Real Cn_r = -0.99;//for cessna
-parameter Real Cn_delta_a = -0.0053;//for cessna
-parameter Real Cn_delta_r = -0.0657;//for cessna
+parameter Real Cn_0 = 0;
+parameter Real Cn_beta = -0.00040;//for cessna
+parameter Real Cn_p  = -0.01297;//for cessna
+parameter Real Cn_r = -0.00434;//for cessna
+parameter Real Cn_delta_a = -0.00328;//for cessna
+parameter Real Cn_delta_r = 0;//for cessna
 
 
 //Initial conditions. (deltaE, thrust[1] and the others are straightforward)
 
-parameter Real[3,3] J = {{1285.31, 0.0, 0.0}, {0.0, 1824.93, 0.0}, {0.0, 0.0, 2666.893}};
+parameter Real[3,3] J = {{0.1147, 0.0, -0.0015}, {0.0, 0.0576, 0.0}, {-0.0015, 0.0, 0.2589}};
 
 Real CL;
 Real CD;
@@ -68,7 +71,7 @@ Real Cn;
 Real CX;
 Real CZ;
 //Params
-parameter Real deltaE = -0.15625;
+parameter Real deltaE = -0.246251;
 parameter Real deltaR = 0;
 
 //Modelica.Blocks.Sources.RealExpression deltaA (y = if time > 100 and time < 105 then  3.1412 /180 elseif time > 105 and time < 110 then -3.1412 /180 else 0)  annotation(    Placement(visible = true, transformation(origin = {-112, 1}, extent = {{-26, -47}, {26, 47}}, rotation = 0)));
@@ -77,7 +80,7 @@ parameter Real deltaR = 0;
 
 
 
-parameter  Real thrust = 1112.82;
+parameter  Real thrust = 4.47729;
 
 //12 states
 Real p (start = 0);
@@ -87,7 +90,7 @@ Real r (start = 0);
 Real OMEGA[3,3] = skew({p,q,r});//Skew symmetric matrix form of the angular velocity term
 
 
-Real V (start =39.8858);
+Real V (start =15.8114);
 Real alpha (start =0.1);
 Real beta (start = 0);
 
@@ -122,8 +125,8 @@ Real zdot;
 
 equation
 CL = CL0+CL_alpha*alpha+((CL_q*q*C_bar)/(2*V))+CL_delta_e*deltaE;
-//CD =  CD0+CD_alpha*alpha+((CD_q*q*C_bar)/(2*V))+CD_delta_e*abs(deltaE)  ;
-CD = CD0 + K_drag*CL^2;
+CD =  CD0+CD_alpha*alpha+((CD_q*q*C_bar)/(2*V))+CD_delta_e*abs(deltaE)  ;
+//CD = CD0 + K_drag*CL^2;
 CY = Cy_beta * beta + Cy_p * (p*b)/(2*V) + Cy_r *(r*b)/(2*V) + Cy_delta_a * deltaA.k + Cy_delta_r*deltaR;//Sideslip coeff
 
 
@@ -180,4 +183,5 @@ chidot=(1/cos(gamma))*sin(mu)*q+(1/cos(gamma))*cos(mu)*r;
 
 
 annotation(experiment(StartTime = 0, StopTime = 500, Interval = 0.002),
-    uses(Modelica(version = "3.2.2")));end Wind6DOFVer;
+    uses(Modelica(version = "3.2.2")));
+end Wind6DOFZagi;

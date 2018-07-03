@@ -453,6 +453,14 @@ D = CD*s*Q;
 0 = -D*sin(alpha)-L*cos(alpha)+m*9.81*cos(theta);
 
 end Trim_Conditions_Cessna;
+
+
+
+
+
+
+
+
     
 model CessnaPerturbed
 
