@@ -1,4 +1,4 @@
-model Wind6DOFVer
+block Wind6DOFBlock
  
 import Modelica.Math.Matrices.*;
 import SI=Modelica.SIunits;
@@ -68,27 +68,28 @@ Real Cn;
 Real CX;
 Real CZ;
 //Params
-parameter Real deltaE = -0.15625;
+RealInput deltaE (start = -0.15625) annotation(start = 0.1,Placement(visible = true, transformation(origin = {-110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+
+//Change inelevator angle
 parameter Real deltaR = 0;
 
-Modelica.Blocks.Sources.RealExpression deltaA (y = if time > 100 and time < 105 then  3.1412 /180 elseif time > 105 and time < 110 then -3.1412 /180 else 0)  annotation(    Placement(visible = true, transformation(origin = {-112, 1}, extent = {{-26, -47}, {26, 47}}, rotation = 0)));
-// Modelica.Blocks.Sources.Constant deltaA (k =0)  annotation(    Placement(visible = true, transformation(origin = {-42, 28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+parameter Real  deltaA= 0;
 
 
 
 
-parameter  Real thrust = 1112.82;
+RealInput thrust (start = 1112.82) annotation(Placement(visible = true, transformation(origin = {-110, 33}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 33}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));//Thrust force = 1112.82;
 
 //12 states
 Real p (start = 0);
-Real q (start = 0);
+Modelica.Blocks.Interfaces.RealOutput q  (start = 0) annotation(Placement(visible = true, transformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  //Angular velocity 
 Real r (start = 0);
 
 Real OMEGA[3,3] = skew({p,q,r});//Skew symmetric matrix form of the angular velocity term
 
 
 Real V (start =39.8858);
-Real alpha (start =0.1);
+Modelica.Blocks.Interfaces.RealOutput alpha (start = 0.1) annotation( Placement(visible = true, transformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  //Angle of attack 
 Real beta (start = 0);
 
 
@@ -96,9 +97,9 @@ Real x (start = 0);
 Real y (start = 0);
 Real z (start = 100);
 
-Real mu (start = 0); 
 Real gamma (start = 0);
 Real chi (start = 0); 
+Real mu (start = 0); 
 
 Real qbar = 0.5*rho*V^2;
 Real [3] Moment;
@@ -124,14 +125,14 @@ equation
 CL = CL0+CL_alpha*alpha+((CL_q*q*C_bar)/(2*V))+CL_delta_e*deltaE;
 //CD =  CD0+CD_alpha*alpha+((CD_q*q*C_bar)/(2*V))+CD_delta_e*abs(deltaE)  ;
 CD = CD0 + K_drag*CL^2;
-CY = Cy_beta * beta + Cy_p * (p*b)/(2*V) + Cy_r *(r*b)/(2*V) + Cy_delta_a * deltaA.y + Cy_delta_r*deltaR;//Sideslip coeff
+CY = Cy_beta * beta + Cy_p * (p*b)/(2*V) + Cy_r *(r*b)/(2*V) + Cy_delta_a * deltaA + Cy_delta_r*deltaR;//Sideslip coeff
 
 
-Cl = Cl_beta * beta + Cl_p*(p*b)/(2*V) + Cl_r *(r*b)/(2*V) + Cl_delta_a * deltaA.y + Cl_delta_r * deltaR;//Rolling coeff
+Cl = Cl_beta * beta + Cl_p*(p*b)/(2*V) + Cl_r *(r*b)/(2*V) + Cl_delta_a * deltaA + Cl_delta_r * deltaR;//Rolling coeff
 
 Cm  = Cm0+Cm_alpha*alpha+((Cm_q*q*C_bar)/(2*V))+Cm_delta_e*deltaE;//pitching coeff
 
-Cn = Cn_beta * beta + Cn_p * (p*b)/(2*V) + Cn_r *(r*b) /(2*V) + Cn_delta_a * deltaA.y + Cn_delta_r * deltaR;//Yawing coeff
+Cn = Cn_beta * beta + Cn_p * (p*b)/(2*V) + Cn_r *(r*b) /(2*V) + Cn_delta_a * deltaA + Cn_delta_r * deltaR;//Yawing coeff
 
 CX = -CD*cos(alpha) + CL*sin(alpha);
 CZ = -CD*sin(alpha) - CL*cos(alpha);
@@ -179,5 +180,6 @@ gammadot = cos(mu)*q-sin(mu)*r;
 chidot=(1/cos(gamma))*sin(mu)*q+(1/cos(gamma))*cos(mu)*r;
 
 
-annotation(experiment(StartTime = 0, StopTime = 500, Interval = 0.002),    uses(Modelica(version = "3.2.2")));
-end Wind6DOFVer;
+annotation(experiment(StartTime = 0, StopTime = 500, Interval = 0.002),
+    uses(Modelica(version = "3.2.2")));
+end Wind6DOFBlock;

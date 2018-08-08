@@ -90,14 +90,17 @@ Real Cm;
 Real CX;
 Real CZ;
 
-parameter  Real thrust = 1112.82;
+RealInput thrust annotation(    Placement(visible = true, transformation(origin = {-110, 33}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 33}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));//Thrust force = 1112.82;
 
-
-Real q (start = 0);
+Modelica.Blocks.Interfaces.RealOutput q annotation(
+    Placement(visible = true, transformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  //Angular velocity 
+    
 Real V (start = 39.8858);
-Real alpha (start = 0.1);
+Modelica.Blocks.Interfaces.RealOutput alpha annotation(start = 0.1,
+    Placement(visible = true, transformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  //Angle of attack 
+    
 Real theta;
-parameter Real del (start = -0.15625);
+RealInput del annotation(    Placement(visible = true, transformation(origin = {-110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 Real x (start = 0);
 Real z (start = 100);
 
