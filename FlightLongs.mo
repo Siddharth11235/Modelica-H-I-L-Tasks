@@ -1,5 +1,7 @@
 model FlightLongs
 
+import Modelica.Blocks.Interfaces.*;
+
 parameter Real rho = 1.225;
 parameter Real m = 1043.26;//1.56 for zagi
 parameter Real S_ref = 16.1651;//reference area
@@ -65,19 +67,25 @@ Real CZ;
 parameter  Real thrust = 1112.82;
 
       
-Real q (start = 0);
-Real V (start =39.8858);
-Real alpha (start =0.1);
+  Modelica.Blocks.Interfaces.RealOutput q (start = 0) annotation(Placement(visible = true, transformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  
+Modelica.Blocks.Interfaces.RealOutput V (start =39.8858) annotation(Placement(visible = true, transformation(origin = {110, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+
+Modelica.Blocks.Interfaces.RealOutput alpha (start =0.1) annotation(Placement(visible = true, transformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+
+
+
 //Real theta;
-parameter Real delSource (start = -0.15625);
-Modelica.Blocks.Sources.RealExpression del (y = if time > 100 and time < 105 then delSource + 3.1412 /180 else delSource)  annotation(    Placement(visible = true, transformation(origin = {-112, 1}, extent = {{-26, -47}, {26, 47}}, rotation = 0)));
+  RealInput del (start = -0.15625) annotation( Placement(visible = true, transformation(origin = {-110, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 
 
 
 
 Real x (start = 0);
 Real z (start = 100);
-Real gamma (start = 0);
+
+Modelica.Blocks.Interfaces.RealOutput gamma (start = 0) annotation(Placement(visible = true, transformation(origin = {110, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+
 
 Real qbar = 0.5*rho*V^2;
 
@@ -90,9 +98,9 @@ Real zdot;
 
 
 equation
-CL = CL0+CL_alpha*alpha+CL_delta_e*del.y;
+CL = CL0+CL_alpha*alpha+CL_delta_e*del;
 CD = CD0 + K_drag*CL^2;
-Cm  = Cm0+Cm_alpha*alpha+Cm_delta_e*del.y;
+Cm  = Cm0+Cm_alpha*alpha+Cm_delta_e*del;
 CX = -CD*cos(alpha) + CL*sin(alpha);
 CZ = -CD*sin(alpha) - CL*cos(alpha);
 

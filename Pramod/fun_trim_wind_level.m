@@ -1,5 +1,6 @@
-function [ dydt] =fun_trim_wind_level( t,y )
+function [ dydt] =fun_trim_wind_level(y )
 alpharad=y(2);
+T = 1112.82;
 g = 9.8;
 rho = 1.225;
 %q=0
@@ -9,16 +10,6 @@ C_bar = 1.493;
 b = 10.911;
 S_ref = 16.1651;
 delta_e= -0.1383;
-if t==0 && t<=100
- delta_e=  -0.1383;
-end
- if t>=101&&t<=111
-        delta_e=  -0.1383+(1*pi/180);
-    end
-    if t>103 && t<=200
-        delta_e=-0.1383;
-    end
-    T=    2.3968e+03
 
   %T=  2.3968e+03
 %T=1.5206e+03
@@ -76,13 +67,13 @@ C_N_delta_a = -0.0053;
 C_N_delta_r = -0.0657;
 I_yy = 1824.93;
 %delta_erad=-( C_M_0 +C_M_alpha*alpharad)/C_M_delta_e
-C_L = C_L_0 + C_L_alpha*alpharad +   C_L_delta_e*delta_e
-C_D = C_D_0 + k*C_L^2
-C_M = C_M_0 + C_M_alpha*alpharad +  C_M_delta_e*delta_e
-C_X = -C_D*cos(alpharad) + C_L*sin(alpharad)
-C_Z = -C_D*sin(alpharad) - C_L*cos(alpharad)
+C_L = C_L_0 + C_L_alpha*alpharad +   C_L_delta_e*delta_e;
+C_D = C_D_0 + k*C_L^2;
+C_M = C_M_0 + C_M_alpha*alpharad +  C_M_delta_e*delta_e;
+C_X = -C_D*cos(alpharad) + C_L*sin(alpharad);
+C_Z = -C_D*sin(alpharad) - C_L*cos(alpharad);
 
-dydt=zeros(6,1)
+dydt=zeros(6,1);
 dydt(1)=1/(m)*(T*cos(y(2))-m*g*sin(y(4))-.5*rho*y(1)^2*S_ref*C_D);%Vdot
 dydt(2)=y(3)-(-g/y(1)+.5*rho*y(1)^2*S_ref*C_L/(m*y(1))+T*sin(y(2))/(m*y(1)));%alphadot
 dydt(3)=1/(2*I_yy)*rho*(y(1)^2)*S_ref*C_bar*C_M;%thetadot
