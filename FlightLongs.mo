@@ -69,7 +69,7 @@ parameter  Real thrust = 1112.82;
       
   Modelica.Blocks.Interfaces.RealOutput q (start = 0) annotation(Placement(visible = true, transformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   
-Modelica.Blocks.Interfaces.RealOutput V (start =39.8858) annotation(Placement(visible = true, transformation(origin = {110, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+Real V (start =39.8858);
 
 Modelica.Blocks.Interfaces.RealOutput alpha (start =0.1) annotation(Placement(visible = true, transformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 
@@ -84,7 +84,7 @@ Modelica.Blocks.Interfaces.RealOutput alpha (start =0.1) annotation(Placement(vi
 Real x (start = 0);
 Real z (start = 100);
 
-Modelica.Blocks.Interfaces.RealOutput gamma (start = 0) annotation(Placement(visible = true, transformation(origin = {110, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+Real gamma (start = 0) ;
 
 
 Real qbar = 0.5*rho*V^2;
