@@ -67,12 +67,12 @@ Real CZ;
 parameter  Real thrust = 1112.82;
 
       
-  Modelica.Blocks.Interfaces.RealOutput q (start = 0) annotation(Placement(visible = true, transformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput q (start = 0) annotation(Placement(visible = true, transformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110,-33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   
 Real V (start =39.8858);
 
-Modelica.Blocks.Interfaces.RealOutput alpha (start =0.1) annotation(Placement(visible = true, transformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 
+  Modelica.Blocks.Interfaces.RealOutput theta (start = 0.1) annotation(Placement(visible = true, transformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110,33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 
 
 //Real theta;
@@ -81,10 +81,11 @@ Modelica.Blocks.Interfaces.RealOutput alpha (start =0.1) annotation(Placement(vi
 
 
 
-Real x (start = 0);
+Real x (start = 0.1);
 Real z (start = 100);
 
-Real gamma (start = 0) ;
+Real alpha (start = 0.1) ;
+Real gamma = alpha - theta;
 
 
 Real qbar = 0.5*rho*V^2;
