@@ -64,25 +64,21 @@ Real Cm;
 Real CX;
 Real CZ;
 
-parameter  Real thrust = 1112.82;
+
+  RealInput del (start = -0.15625) annotation( Placement(visible = true, transformation(origin = {-110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+
+  RealInput thrust (start = 1112.82) annotation( Placement(visible = true, transformation(origin = {-110, 33}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 33}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 
       
-  Modelica.Blocks.Interfaces.RealOutput q (start = 0) annotation(Placement(visible = true, transformation(origin = {110, -33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110,-33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput q (start = 0) annotation(Placement(visible = true, transformation(origin = {110, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110,-50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   
-Real V (start =39.8858);
+  Modelica.Blocks.Interfaces.RealOutput V (start = 39.8858) annotation(Placement(visible = true, transformation(origin = {110, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110,100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 
 
-  Modelica.Blocks.Interfaces.RealOutput theta (start = 0.1) annotation(Placement(visible = true, transformation(origin = {110, 33}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110,33}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-
-
-//Real theta;
-  RealInput del (start = -0.15625) annotation( Placement(visible = true, transformation(origin = {-110, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-
-
-
+  Modelica.Blocks.Interfaces.RealOutput theta (start = 0.1) annotation(Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110,0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 
 Real x (start = 0.1);
-  Modelica.Blocks.Interfaces.RealOutput z (start = 100) annotation(Placement(visible = true, transformation(origin = {110, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110,66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput z (start = 100) annotation(Placement(visible = true, transformation(origin = {110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110,50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 
 Real alpha (start = 0.1) ;
 Real gamma = alpha - theta;
