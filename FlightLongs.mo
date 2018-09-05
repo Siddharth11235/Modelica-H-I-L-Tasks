@@ -82,7 +82,7 @@ Real V (start =39.8858);
 
 
 Real x (start = 0.1);
-Real z (start = 100);
+  Modelica.Blocks.Interfaces.RealOutput z (start = 100) annotation(Placement(visible = true, transformation(origin = {110, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110,66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 
 Real alpha (start = 0.1) ;
 Real gamma = alpha - theta;
