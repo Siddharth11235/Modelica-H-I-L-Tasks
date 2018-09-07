@@ -1,18 +1,24 @@
-
-
-void setup()
-{
+void setup() {
+  // put your setup code here, to run once:
   Serial.begin(115200); //serial begin
+
 }
 
 unsigned long lastTime;
-double Input, Output, Setpoint;
-double errSum, lastErr;
-double kp = 15;
-double ki =0;
-double kd =0;
-void Compute(double kp, double ki,double kd)
+double Input[3];
+double q, theta, theta_Ref, delEplus, delE;
+
+void feedback(double termRef, double termErr, double Output)
 {
+  Output = termRef - termErr;
+}
+
+
+
+void Compute(double Input, double Output, double Setpoint, double kp, double ki,double kd)
+{
+    double errSum, lastErr;
+
    /*How long since we last calculated*/
    unsigned long now = millis();
    double timeChange = (double)(now - lastTime)/10;
@@ -29,11 +35,9 @@ void Compute(double kp, double ki,double kd)
    lastErr = error;
    lastTime = now;
 }
-  
 
-void loop()
-{
-  String readStr = ""; //some variables
+void loop() {
+ String readStr = ""; //some variables
   String readVal = "";
   
   
@@ -52,12 +56,14 @@ void loop()
   
    
       //Setpoint = 100*sin(millis()*3.1412/(20*180))+100;// This is for the case where we may not have a FG on hand.
-      Setpoint = 100;  
+      theta_Ref = double(analogRead(A5));  
 
     
     Input = readVal.toDouble(); //extract value
-    Compute(15.0,0.0,0.0);
+    q = Input[0];
+    
     Serial.println("1,"+String(Output)+"\n"+"2,"+String(Setpoint)+"\n"); //send data in same format i.e. ending with \n character
     delay(5);
   } 
+
 }

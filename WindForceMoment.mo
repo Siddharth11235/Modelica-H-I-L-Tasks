@@ -1,8 +1,11 @@
-model Wind6DOFVer
- 
+model WindForceMoment
+
 import Modelica.Math.Matrices.*;
-import SI=Modelica.SIunits;
+import Modelica.SIunits.*;
 import Modelica.Blocks.Interfaces.*;
+import Modelica.Math.Vectors.*;
+
+
 
 parameter Real rho = 1.225;
 parameter Real g = 9.81;
@@ -10,9 +13,6 @@ parameter Real m = 1043.26;//1.56 for zagi
 parameter Real S_ref = 16.1651;//reference area
 parameter Real C_bar = 1.493 ;//average chord
 parameter Real b = 10.911 ;//span
-//parameter Real b= 1.4224, cbar = 0.3302,s = 0.2589;
-
-
 
 parameter Real CD0    = 0.036;//= 0.01631;for Zagi
 parameter Real K_drag  = 0.0830304;//for cessna
@@ -54,11 +54,6 @@ parameter Real Cn_r = -0.99;//for cessna
 parameter Real Cn_delta_a = -0.0053;//for cessna
 parameter Real Cn_delta_r = -0.0657;//for cessna
 
-
-//Initial conditions. (deltaE, thrust[1] and the others are straightforward)
-
-parameter Real[3,3] J = {{1285.31, 0.0, 0.0}, {0.0, 1824.93, 0.0}, {0.0, 0.0, 2666.893}};
-
 Real CL;
 Real CD;
 Real CY;
@@ -67,56 +62,38 @@ Real Cm;
 Real Cn;
 Real CX;
 Real CZ;
-//Params
-parameter Real deltaE = -0.15625;
-parameter Real deltaR = 0;
 
-parameter Real deltaA = 0;
+RealInput thrust annotation(   Placement(visible = true, transformation(origin = {-110, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));//Thrust force
+    
+RealInput[3] delta annotation(
+    Placement(visible = true, transformation(origin = {-110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+ 
+RealInput[3] VAB annotation(    Placement(visible = true, transformation(origin = {-33, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-33, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));//V, alpha, beta
 
+RealInput[3] omega annotation(    Placement(visible = true, transformation(origin = {33, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {33, 110}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));//Angular velocities
 
-
-
-parameter  Real thrust = 1112.82;
-
-//12 states
-Real p (start = 0);
-Real q (start = 0);
-Real r (start = 0);
-
-Real OMEGA[3,3] = skew({p,q,r});//Skew symmetric matrix form of the angular velocity term
-
-
-Real V (start =39.8858);
-Real alpha (start =0.1);
-Real beta (start = 0);
-
-
-Real x (start = 0);
-Real y (start = 0);
-Real z (start = 100);
-
-Real mu (start = 0); 
-Real gamma (start = 0);
-Real chi (start = 0); 
+ 
+ 
+Real V = VAB[1];
+Real alpha = VAB[2];
+Real beta = VAB[3];
+ 
+Real p = omega[1];
+Real q = omega[2];
+Real r = omega[3]; 
+    
+Real deltaE = delta[1];
+Real deltaR = delta[2];
+Real deltaA = delta[3];
 
 Real qbar = 0.5*rho*V^2;
-Real [3] Moment;
 
 
 
-Real Vdot;
-Real alphadot;
-Real betadot;
+RealOutput Force[3] annotation(   Placement(visible = true, transformation(origin = {110, 33}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, 33}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));//Thrust force
 
-Real[3] omegadot;
+RealOutput Moment[3] annotation(   Placement(visible = true, transformation(origin = {110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {110, -33}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));//Thrust force
 
-Real mudot;
-Real gammadot;
-Real chidot;
-
-Real xdot;
-Real ydot;
-Real zdot;
 
 
 equation
@@ -135,48 +112,13 @@ Cn = Cn_beta * beta + Cn_p * (p*b)/(2*V) + Cn_r *(r*b) /(2*V) + Cn_delta_a * del
 CX = -CD*cos(alpha) + CL*sin(alpha);
 CZ = -CD*sin(alpha) - CL*cos(alpha);
 
+Force[1] = thrust*cos(alpha)*cos(beta)-0.5*rho*V^2*S_ref*(CD*cos(beta)-CY*sin(beta));
+Force[2] = -thrust*cos(alpha)*sin(beta)+0.5*rho*V^2*S_ref*(CY*cos(beta)+CD*sin(beta));
+Force[3] = 0.5*rho*V^2*S_ref*CL+thrust*sin(alpha);
+
+
 Moment[2] = Cm*qbar*S_ref*C_bar;
 Moment[1] = Cl*qbar*S_ref*b;
 Moment[3] = Cn*qbar*S_ref*b;
 
-Vdot = der(V);
-alphadot = der(alpha);
-betadot = der(beta);
-
-omegadot[1] = der(p);
-omegadot[2] = der(q);
-omegadot[3] = der(r);
-
-xdot = der(x);
-ydot = der(y);
-zdot = der(z);
-
-mudot = der(mu);
-gammadot = der(gamma);
-chidot = der(chi);
-
-
-
-
-Vdot = 1/m*(thrust*cos(alpha)*cos(beta)-0.5*rho*V^2*S_ref*(CD*cos(beta)-CY*sin(beta))-m*g*sin(gamma));
-
-alphadot = q-1/cos(beta)*((p*cos(alpha)+r*sin(alpha))*sin(beta)-g/V*cos(gamma)*cos(mu)+(0.5*rho*V^2*S_ref*CL+thrust*sin(alpha))/(m*V));
-
-betadot = (p*sin(alpha)-r*cos(alpha))+1/(m*V)*(-thrust*cos(alpha)*sin(beta)+0.5*rho*V^2*S_ref*(CY*cos(beta)+CD*sin(beta))+m*g*cos(gamma)*sin(mu));
-
-
-omegadot = inv(J) * (Moment- OMEGA* J*{p,q,r});
-
-
-
-xdot=V*cos(gamma)*cos(chi);
-ydot=V*cos(gamma)*sin(chi);
-zdot=-V*sin(gamma);
-
-mudot = p+tan(gamma)*sin(mu)*q+tan(gamma)*cos(mu)*r;
-gammadot = cos(mu)*q-sin(mu)*r;
-chidot=(1/cos(gamma))*sin(mu)*q+(1/cos(gamma))*cos(mu)*r;
-
-
-annotation(experiment(StartTime = 0, StopTime = 500, Interval = 0.002),    uses(Modelica(version = "3.2.2")));
-end Wind6DOFVer;
+end WindForceMoment;

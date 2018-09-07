@@ -13,7 +13,7 @@ model FlightControlModel
     Placement(visible = true, transformation(origin = {-148, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Feedback feedback3 annotation(
     Placement(visible = true, transformation(origin = {-114, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Continuous.PI PI1(T = 30, k = 0.1) annotation(
+  Modelica.Blocks.Continuous.PI PI1(T = 20, k = 0.1) annotation(
     Placement(visible = true, transformation(origin = {-84, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant thrust(k = 1112.82) annotation(
     Placement(visible = true, transformation(origin = {22, 54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -40,5 +40,6 @@ equation
     Line(points = {{-26, 12}, {-42, 12}}, color = {0, 0, 127}));
   connect(gain2.y, feedback1.u2) annotation(
     Line(points = {{47.5, -17}, {26, -17}, {26, -6.5}, {26, -6.5}, {26, 4}}, color = {0, 0, 127}));
-  annotation(
-    uses(Modelica(version = "3.2.2")));end FlightControlModel;
+  annotation(experiment(StartTime = 0, StopTime = 500, Interval = 0.002),    uses(Modelica(version = "3.2.2")));
+
+    end FlightControlModel;

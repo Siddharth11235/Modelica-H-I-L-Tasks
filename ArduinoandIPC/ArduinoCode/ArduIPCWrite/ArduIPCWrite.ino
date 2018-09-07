@@ -1,17 +1,15 @@
-double Output = 0;
-
+double Input;
 void setup()
 {
   Serial.begin(115200); //serial begin
 }
-void func()
-{
-  Output = Output +1 ; 
-}
+
 void loop()
 {
+  String readStr = ""; //some variables
+  String readVal = "";
   
-  /*while(Serial.available())
+  while(Serial.available())
   {
     char readChar = (char)Serial.read();
     readStr+=readChar; 
@@ -22,8 +20,8 @@ void loop()
       readVal += readStr[i];  
     }
     Input = readVal.toDouble(); //extract value*/
-    func();
-   Serial.println("1,"+String(Output)+"\n"); //send data in same format i.e. ending with \n character
+    
+   Serial.println("1,"+String(Input)+"\n"); //send data in same format i.e. ending with \n character
    
     delay(5); 
 }
