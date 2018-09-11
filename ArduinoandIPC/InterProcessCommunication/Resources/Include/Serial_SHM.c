@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
         {
                 inData = serialRead();
                 strcpy(someData, inData);
-                printf("ardOutput:%s\n", someData);
+                printf("ardOutput- %s\n", someData);
                 for(i=0; i<strlen(someData); i++)
                 {
                     if(someData[i]==',') 
