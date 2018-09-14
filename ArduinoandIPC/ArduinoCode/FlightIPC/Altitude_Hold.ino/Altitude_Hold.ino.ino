@@ -6,7 +6,7 @@ void setup() {
 
 unsigned long lastTime;
 double Input[3];
-double q, theta, theta_Ref, delEplus, delE;
+double q, theta, theta_Ref, delE2, delE1, delE;
 
 void feedback(double termRef, double termErr, double Output)
 {
@@ -37,56 +37,36 @@ void Compute(double Input, double Output, double Setpoint, double kp, double ki,
 }
 
 void loop() {
- String readStr = ""; //some variables
+   String readStr = ""; //some variables
   String readVal = "";
-  char* p;
-  char* q_c;
-  char* theta_c;
-  
-  
-  if (Serial.available())
-  { //when serial data comes from modelica
-  while(Serial.available())
-  {
+  double inVal, outVal;
+  int breakCount = 0;
+  if (Serial.available()){ //when serial data comes from modelica
+  while(Serial.available()){
     char readChar = (char)Serial.read();
     readStr+=readChar; 
-    if(readChar == '\n') break;
+    if(readChar == '\n') breakCount++;
+    if (breakCount == 2) break;
   } //read the data and store in a string
     for (int i = 1; i < (readStr.length()-1); i++)
     {
-      readVal += readStr[i];  
+      readVal += readStr[i];
     }
+    char a[20];
+    readVal.toCharArray(a,20);
+    char* b = strtok(a,",");
+    q= atof(b);
+    b = strtok(NULL,",");
+    theta = atof(b);
 
-
-     int readVal_len = readVal.length() + 1;
-    char readF[readVal_len];
-    readVal.toCharArray(readF, readVal_len);
+    double thetaRef = 0.1;
+    Compute(theta, delE1, thetaRef, 0.2, 1/15, 0);
+    delE = delE1 - q*0.002; 
     
-    p = strtok(readF, ",");
-     if(p)
-    {
-    q_c= p;
-    }
-    p = strtok(NULL, ",");
-
-    if(p)
-    {
-     theta_c = p; 
-     
-    }
-    String q_s(q_c);
-    String theta_s(theta_c);
-  
-   
-      //Setpoint = 100*sin(millis()*3.1412/(20*180))+100;// This is for the case where we may not have a FG on hand.
-      theta_Ref = double(analogRead(A5));  
-
-    q = q_s.toDouble();
-    theta = theta_s.toDouble();
 
     
-//    Serial.println("1,"+String(Output)+"\n"+"2,"+String(Setpoint)+"\n"); //send data in same format i.e. ending with \n character
-    delay(5);
+   Serial.print("1," + String(delE) + "\n"); //send data in same format i.e. ending with \n character
+    delay(2);
   } 
 
 }
