@@ -39,7 +39,7 @@ char *shmRead(int num2)
     char* returnVal;
     returnVal = PID->sendVal[num2];
     return returnVal;
-}					
+}                   
 
 int main(int argc, char *argv[])
 {
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
      }
 
 
-	char S_Port[32]="";
+    char S_Port[32]="";
     int S_Baud = atoi(argv[1]);;
     //  printf("Serial Port (e.g. /dev/ttyUSB0) : ");
     scanf("%s", S_Port);    
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
     while(1)
     {
-    	char* outData;
+        char* outData;
         char someData[32]="";
         const char* inData;
         char val[10]="";
@@ -76,10 +76,10 @@ int main(int argc, char *argv[])
             outData = shmRead(i);
             if(strcmp(outData, "") == 0);
             else{
-            	printf("input:%s", outData);
-            	serialWrite(outData);      
-            	usleep(1000);
-            	strcpy(PID->sendVal[i], "");
+                printf("input:%s", outData);
+                serialWrite(outData);      
+                usleep(1000);
+                strcpy(PID->sendVal[i], "");
             }
         }
 
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
         {
                 inData = serialRead();
                 strcpy(someData, inData);
-                printf("ardOutput- %s\n", someData);
+                printf("ardOutput:%s\n", someData);
                 for(i=0; i<strlen(someData); i++)
                 {
                     if(someData[i]==',') 
@@ -109,4 +109,3 @@ int main(int argc, char *argv[])
 printf("came out of loop..!");
 serialEnd();
 }
-

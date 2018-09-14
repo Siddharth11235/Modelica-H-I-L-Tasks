@@ -31,7 +31,7 @@ double shmWrite(int num1, double tagValue)
 	char outData[]="";
 	shmAccess();
 	
-	sprintf(outData,"%d:%g\n", num1, tagValue);
+	sprintf(outData,"%d,%g\n", num1, tagValue);
 	strcpy(PID-> sendVal[num1], outData);
 	return 0;
 }
@@ -40,9 +40,9 @@ double shmRead(int num2)
 {
 	shmAccess();
 
-	double returnVal=0;
-	returnVal = PID->getVal[num2];
-	return returnVal;
+	double retrunVal=0;
+	retrunVal = PID->getVal[num2];
+	return retrunVal;
 }
 	
 /*void main()
