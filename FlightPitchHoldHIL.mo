@@ -17,7 +17,7 @@ equation
 ModelicaOutput1 = flightLongs1.q;
 ModelicaOutput2 = flightLongs1.theta;
 flightLongs1.del = ModelicaInput ;  
-when sample(0, 0.05) then
+when sample(0, 0.018) then
     ModelicaInput = InterProcessCommunication.SharedMemory.SharedMemoryRead(1)         "SharedMemoryRead Function reads the value from the shared memory, pointed by pidOutputIndex tag and assigns it to the input of the DC motor";
     OutputDummy1 = InterProcessCommunication.SharedMemory.SharedMemoryWrite(1, ModelicaOutput1)
  "SharedMemoryWrite Function writes the value of measured speed into the shared memory, pointed by pidInputIndex tag" ;
